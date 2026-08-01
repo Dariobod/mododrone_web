@@ -1,0 +1,19 @@
+# OS generated files
+.DS_Store
+Thumbs.db
+*.tmp
+
+# Logs
+*.log
+npm-debug.log*
+
+# Node / Dependencies (en caso de incluir librerías en el futuro)
+node_modules/
+dist/
+build/
+
+# Entorno y variables secretas
+.env
+.env.local
+.env.development
+.env.production

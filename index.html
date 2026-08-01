@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modo Drone | Hub de Operaciones & FPV</title>
+
+    <!-- Fuentes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Iconos FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Configuración Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+                    },
+                    colors: {
+                        apple: {
+                            bg: '#000000',          
+                            card: '#1c1c1e',        
+                            text: '#f5f5f7',        
+                            gray: '#86868b',        
+                            green: '#cefa03',       
+                            glass: 'rgba(28, 28, 30, 0.7)' 
+                        }
+                    },
+                    boxShadow: {
+                        'apple': '0 4px 24px rgba(0,0,0,0.4)',
+                        'apple-hover': '0 10px 40px rgba(0,0,0,0.1)',
+                        'glow': '0 0 30px rgba(206, 250, 3, 0.15)' 
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { background-color: #000000; color: #f5f5f7; -webkit-font-smoothing: antialiased; }
+       .glass { background: rgba(28, 28, 30, 0.6); backdrop-filter: saturate(180%) blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); }
+       .glass-card { background: rgba(40, 40, 42, 0.4); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.05); }
+       .no-scrollbar::-webkit-scrollbar { display: none; }
+       .fade-in { animation: fadeIn 0.8s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+       .modal-content-enter { animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        @keyframes slideUp { from { transform: translateY(50px) scale(0.97); opacity: 0; } to { transform: translateY(0) scale(1); opacity: 1; } }
+       .play-overlay { opacity: 0; transition: all 0.3s ease; }
+       .group:hover .play-overlay { opacity: 1; transform: scale(1.1); }
+    </style>
+</head>
+<body class="selection:bg-apple-green selection:text-black relative">
+
+    <!-- Navbar Glass -->
+    <nav class="fixed w-full z-40 glass border-b border-white/10 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <!-- Logo -->
+                <a onclick="scrollToSection('inicio')" class="flex-shrink-0 flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity">
+                    <img src="https://lh3.googleusercontent.com/d/1sPs2vD4seUO_QgIBoVx5ZAZIEGCD7HQ9=w1000?authuser=0" alt="Modo Drone Logo" class="h-10 w-auto rounded-md">
+                    <span class="font-semibold text-xl tracking-tight hidden sm:block">Modo Drone</span>
+                </a>
+                
+                <!-- Links Desktop -->
+                <div class="hidden md:flex space-x-8 text-sm font-medium text-apple-gray">
+                    <a onclick="scrollToSection('inicio')" class="cursor-pointer hover:text-white transition-colors">Inicio</a>
+                    <a onclick="scrollToSection('portfolio')" class="cursor-pointer hover:text-white transition-colors">Portfolio</a>
+                    <a onclick="scrollToSection('tutoriales')" class="cursor-pointer hover:text-white transition-colors">Tutoriales</a>
+                    <a onclick="scrollToSection('contacto')" class="cursor-pointer hover:text-white transition-colors">Contacto</a>
+                </div>
+
+                <!-- Redes Sociales -->
+                <div class="flex items-center gap-4 text-apple-gray">
+                    <a href="https://www.tiktok.com/@mododrone" target="_blank" class="hover:text-white transition-colors"><i class="fa-brands fa-tiktok text-lg"></i></a>
+                    <a href="https://www.youtube.com/c/ModoDrone" target="_blank" class="hover:text-white transition-colors"><i class="fa-brands fa-youtube text-lg"></i></a>
+                    <a href="https://instagram.com/modo_drone" target="_blank" class="hover:text-white transition-colors"><i class="fa-brands fa-instagram text-lg"></i></a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main id="main-view">
+        <!-- Hero Section con Video -->
+        <section id="inicio" class="relative w-full h-[70vh] md:h-[85vh] min-h-[500px] flex items-center justify-start overflow-hidden">
+            <video src="https://res.cloudinary.com/dd0gsndtt/video/upload/v1775685403/video_banner_01_yimb2w.mp4" autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none opacity-80"></video>
+            <div class="absolute inset-0 bg-gradient-to-t from-apple-bg via-black/50 to-black/30 z-10 pointer-events-none"></div>
+
+            <div class="relative z-20 w-full max-w-7xl mx-auto px-6 lg:px-8 mt-16 md:mt-0">
+                <div class="fade-in max-w-2xl">
+                    <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-4 tracking-tight drop-shadow-lg">
+                        Vuelo <br />
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-apple-green to-[#eaff80]">Sin Límites</span>
+                    </h1>
+                    <p class="text-white/80 text-lg md:text-xl font-medium drop-shadow-md border-l-4 border-apple-green pl-4">
+                        Tu portal de videos en 4K y secretos de filmación para creadores aéreos.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 animate-bounce text-white/50 cursor-pointer" onclick="scrollToSection('portfolio')">
+                <i class="fa-solid fa-chevron-down text-2xl"></i>
+            </div>
+        </section>
+
+        <!-- Sección Portfolio -->
+        <section id="portfolio" class="py-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="mb-10 text-center md:text-left">
+                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-apple-text">Portfolio Paisajes.</h2>
+                    <p class="text-apple-gray mt-2 text-lg">Cinematografía aérea y perspectivas únicas.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6" id="portfolio-grid">
+                    <!-- Skeletons... -->
+                    <div class="glass-card rounded-2xl overflow-hidden flex flex-col animate-pulse border border-white/5"><div class="w-full aspect-video bg-white/10"></div><div class="p-4 space-y-3"><div class="h-4 bg-white/10 rounded w-3/4"></div><div class="h-3 bg-white/10 rounded w-full"></div></div></div>
+                    <div class="glass-card rounded-2xl overflow-hidden flex flex-col animate-pulse border border-white/5 hidden sm:flex"><div class="w-full aspect-video bg-white/10"></div><div class="p-4 space-y-3"><div class="h-4 bg-white/10 rounded w-3/4"></div><div class="h-3 bg-white/10 rounded w-full"></div></div></div>
+                    <div class="glass-card rounded-2xl overflow-hidden flex flex-col animate-pulse border border-white/5 hidden md:flex"><div class="w-full aspect-video bg-white/10"></div><div class="p-4 space-y-3"><div class="h-4 bg-white/10 rounded w-3/4"></div><div class="h-3 bg-white/10 rounded w-full"></div></div></div>
+                    <div class="glass-card rounded-2xl overflow-hidden flex flex-col animate-pulse border border-white/5 hidden lg:flex"><div class="w-full aspect-video bg-white/10"></div><div class="p-4 space-y-3"><div class="h-4 bg-white/10 rounded w-3/4"></div><div class="h-3 bg-white/10 rounded w-full"></div></div></div>
+                </div>
+
+                <div id="portfolio-pagination" class="flex justify-center items-center mt-10 gap-2"></div>
+            </div>
+        </section>
+
+        <!-- Sección Tutoriales / Cursos -->
+        <section id="tutoriales" class="py-16 bg-apple-card/30 border-y border-white/5">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4">
+                    <div class="text-center md:text-left">
+                        <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-apple-text">Academia & Tutoriales.</h2>
+                        <p class="text-apple-gray mt-2 text-lg">Aprende a volar y configurar como un profesional.</p>
+                    </div>
+                    <a href="https://www.youtube.com/c/ModoDrone" target="_blank" class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white px-5 py-2 rounded-full text-sm font-medium transition-colors border border-white/10 mx-auto md:mx-0">
+                        <i class="fa-brands fa-youtube text-red-500"></i> Ver Canal
+                    </a>
+                </div>
+                
+                <div id="tutoriales-filters" class="flex flex-wrap justify-center md:justify-start gap-2 md:gap-3 mb-8">
+                    <!-- Skeletons de filtros -->
+                    <div class="w-20 h-8 bg-white/10 rounded-full animate-pulse"></div>
+                    <div class="w-24 h-8 bg-white/10 rounded-full animate-pulse"></div>
+                </div>
+                
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-5" id="tutoriales-grid">
+                    <!-- Skeletons verticales -->
+                    <div class="glass-card rounded-2xl overflow-hidden flex flex-col animate-pulse border border-white/5"><div class="w-full aspect-[9/16] bg-white/10"></div><div class="p-3 space-y-2"><div class="h-3 bg-white/10 rounded w-full"></div><div class="h-2 bg-white/10 rounded w-4/5"></div></div></div>
+                    <div class="glass-card rounded-2xl overflow-hidden flex flex-col animate-pulse border border-white/5"><div class="w-full aspect-[9/16] bg-white/10"></div><div class="p-3 space-y-2"><div class="h-3 bg-white/10 rounded w-full"></div><div class="h-2 bg-white/10 rounded w-4/5"></div></div></div>
+                    <div class="glass-card rounded-2xl overflow-hidden flex flex-col animate-pulse border border-white/5 hidden sm:flex"><div class="w-full aspect-[9/16] bg-white/10"></div><div class="p-3 space-y-2"><div class="h-3 bg-white/10 rounded w-full"></div><div class="h-2 bg-white/10 rounded w-4/5"></div></div></div>
+                    <div class="glass-card rounded-2xl overflow-hidden flex flex-col animate-pulse border border-white/5 hidden md:flex"><div class="w-full aspect-[9/16] bg-white/10"></div><div class="p-3 space-y-2"><div class="h-3 bg-white/10 rounded w-full"></div><div class="h-2 bg-white/10 rounded w-4/5"></div></div></div>
+                    <div class="glass-card rounded-2xl overflow-hidden flex flex-col animate-pulse border border-white/5 hidden lg:flex"><div class="w-full aspect-[9/16] bg-white/10"></div><div class="p-3 space-y-2"><div class="h-3 bg-white/10 rounded w-full"></div><div class="h-2 bg-white/10 rounded w-4/5"></div></div></div>
+                </div>
+                
+                <div id="tutoriales-pagination" class="flex justify-center items-center mt-10 gap-2"></div>
+            </div>
+        </section>
+
+        <!-- Sección Contacto -->
+        <section id="contacto" class="py-24 relative">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="glass-card rounded-[2rem] p-8 md:p-12 border border-white/10 relative overflow-hidden flex flex-col md:flex-row gap-12">
+                    <div class="absolute -top-24 -left-24 w-64 h-64 bg-apple-green/20 rounded-full blur-3xl pointer-events-none"></div>
+                    <div class="relative z-10 w-full md:w-1/2 flex flex-col justify-center">
+                        <i class="fa-regular fa-paper-plane text-4xl text-apple-green mb-6"></i>
+                        <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-white mb-4">Cotiza tu proyecto.</h2>
+                        <p class="text-apple-gray text-lg mb-8">Tomas con drones, edicion de videos, eventos e inspecciones técnicas.</p>
+                        <div class="flex flex-col gap-4">
+                            <a href="mailto:mododroneok@gmail.com" class="flex items-center text-white hover:text-apple-green transition-colors w-max">
+                                <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center mr-4 border border-white/10"><i class="fa-regular fa-envelope"></i></div>
+                                mododroneok@gmail.com
+                            </a>
+                            <a href="https://instagram.com/modo_drone" target="_blank" class="flex items-center text-white hover:text-apple-green transition-colors w-max">
+                                <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center mr-4 border border-white/10"><i class="fa-brands fa-instagram"></i></div>
+                                @modo_drone
+                            </a>
+                        </div>
+                    </div>
+                    <div class="relative z-10 w-full md:w-1/2">
+                        <div class="bg-black/40 backdrop-blur-md p-6 md:p-8 rounded-2xl border border-white/10 shadow-2xl">
+                            <form id="contactForm" class="space-y-5">
+                                <input type="text" name="nombre" required placeholder="Tu Nombre" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-apple-green transition-colors">
+                                <input type="email" name="mail" required placeholder="Tu Correo" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-apple-green transition-colors">
+                                <textarea name="consulta" required rows="4" placeholder="¿En qué te ayudamos?" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-apple-green transition-colors resize-none"></textarea>
+                                <button type="submit" id="submitBtn" class="w-full bg-apple-green text-black font-bold py-3.5 rounded-xl hover:bg-[#b8e000] hover:shadow-glow transition-all flex items-center justify-center gap-2">
+                                    <span>Enviar Mensaje</span><i class="fa-solid fa-paper-plane text-sm"></i>
+                                </button>
+                            </form>
+                            <div id="formSuccess" class="hidden mt-4 p-4 bg-green-500/20 border border-green-500/30 rounded-xl text-green-400 text-center text-sm font-medium">¡Enviado con éxito!</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 py-12 text-center bg-[#050505]">
+        <div class="flex justify-center gap-6 mb-6">
+            <a href="https://www.tiktok.com/@mododrone" target="_blank" class="w-12 h-12 rounded-full glass-card flex items-center justify-center text-apple-gray hover:text-white transition-all"><i class="fa-brands fa-tiktok text-xl"></i></a>
+            <a href="https://www.youtube.com/c/ModoDrone" target="_blank" class="w-12 h-12 rounded-full glass-card flex items-center justify-center text-apple-gray hover:text-white transition-all"><i class="fa-brands fa-youtube text-xl"></i></a>
+            <a href="https://instagram.com/modo_drone" target="_blank" class="w-12 h-12 rounded-full glass-card flex items-center justify-center text-apple-gray hover:text-white transition-all"><i class="fa-brands fa-instagram text-xl"></i></a>
+        </div>
+        <img src="https://lh3.googleusercontent.com/d/1sPs2vD4seUO_QgIBoVx5ZAZIEGCD7HQ9=w1000?authuser=0" class="h-8 w-auto mx-auto mb-4 opacity-50 grayscale">
+        <p class="text-apple-gray text-sm">&copy; <span id="year"></span> Modo Drone.</p>
+    </footer>
+
+    <!-- Widget de Chat Bot Reglamentario -->
+    <div id="droneBot" class="fixed bottom-6 right-6 z-[100] flex flex-col items-end">
+        <div id="chatWindow" class="hidden glass-card w-[320px] md:w-[380px] h-[450px] mb-4 rounded-[2rem] overflow-hidden flex flex-col shadow-2xl border border-white/20 fade-in">
+            
+            <!-- Cabecera -->
+            <div class="bg-apple-green p-4 flex items-center gap-3 shrink-0">
+                <div class="w-8 h-8 bg-black rounded-full flex items-center justify-center">
+                    <i class="fa-solid fa-robot text-apple-green text-xs"></i>
+                </div>
+                <div>
+                    <h4 class="text-black font-bold text-sm">Asistente de Vuelo</h4>
+                    <p class="text-black/60 text-[10px] font-bold uppercase tracking-tight">Modo Drone AI</p>
+                </div>
+            </div>
+
+            <!-- Cuerpo del Chat -->
+            <div id="chatBody" class="flex-1 p-4 overflow-y-auto space-y-4 no-scrollbar bg-black/20">
+                <div class="bg-white/10 p-3 rounded-2xl rounded-tl-none text-xs leading-relaxed border border-white/5">
+                    ¡Hola! Soy tu asistente de vuelo. 🚁<br><br>
+                    Pregúntame sobre reglamentación (ej: "altura") o presiona el botón de menú para ver mis herramientas meteorológicas en vivo.
+                </div>
+            </div>
+
+            <!-- Input de búsqueda -->
+            <div class="p-3 bg-white/5 border-t border-white/10 flex items-center gap-2 shrink-0">
+                <button onclick="triggerBotSearch('menú')" class="w-10 h-10 shrink-0 bg-white/5 border border-white/10 rounded-full flex items-center justify-center text-apple-gray hover:text-black hover:bg-apple-green transition-all shadow-sm group" title="Ver Menú de Temas">
+                    <i class="fa-solid fa-bars text-sm group-hover:scale-110 transition-transform"></i>
+                </button>
+                <div class="relative flex-1">
+                    <input type="text" id="botSearchInput" placeholder="Escribe tu duda..." 
+                           class="w-full bg-black/40 border border-white/10 rounded-full pl-4 pr-10 py-2.5 text-sm text-white focus:outline-none focus:border-apple-green transition-all">
+                    <button onclick="searchNormativa()" class="absolute right-3 top-1/2 -translate-y-1/2 text-apple-green hover:scale-110 transition-transform flex items-center justify-center">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <button onclick="toggleChat()" class="w-14 h-14 bg-apple-green rounded-full shadow-glow flex items-center justify-center text-black text-xl hover:scale-110 transition-all duration-300">
+            <i id="botIcon" class="fa-solid fa-comments"></i>
+        </button>
+    </div>
+
+    <!-- MODAL REPRODUCTOR DE VIDEO -->
+    <div id="videoModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6">
+        <div id="modalOverlay" class="absolute inset-0 bg-black/80 backdrop-blur-md transition-opacity cursor-pointer" onclick="closeModal()"></div>
+        <div id="modalContent" class="relative w-full max-w-5xl bg-apple-card rounded-2xl shadow-2xl overflow-hidden border border-white/10 flex flex-col">
+            <button onclick="closeModal()" class="absolute top-4 right-4 z-50 w-10 h-10 bg-black/50 backdrop-blur-md hover:bg-white/20 text-white rounded-full flex items-center justify-center transition-colors border border-white/10 shadow-lg"><i class="fa-solid fa-xmark"></i></button>
+            <div id="modalTopBar" class="absolute top-0 left-0 w-full p-4 flex justify-between items-start z-10 pointer-events-none">
+                <div class="pointer-events-auto bg-black/50 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 max-w-[80%]"><h3 id="modalTitle" class="text-white font-semibold text-sm line-clamp-1">Reproduciendo</h3></div>
+            </div>
+            <div class="w-full aspect-video bg-black shrink-0" id="iframeContainer"></div>
+            <div id="modalTextContainer" class="p-6 bg-apple-card border-t border-white/5 flex flex-col"></div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        const API_URL = "https://script.google.com/macros/s/AKfycbxh8Fy1ANi-PfDz3z3neKNfQlqZXJXMHBU2iFDPUP7tFBEVObfnQYWx0In2q3K2NlFQrA/exec";
+        const CONTACT_API_URL = "https://script.google.com/macros/s/AKfycbzawIZGAOFMLRIM4Z-DGfIgXQDec57eastP4yIvM7ypw4-EsEAwggGLo39HhmiIMndijA/exec";
+        
+        let allPortfolio = [], allTutorials = [], filteredTutorials = [], tutorialCategories = [], currentTutorialFilter = 'Todos';
+        const ITEMS_PER_PAGE_PORTFOLIO = 8, ITEMS_PER_PAGE_TUTORIALS = 10;
+        let normativaData = [];
+
+        function getYouTubeId(url) {
+            if (!url) return null;
+            const regExp = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?|shorts)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
+            const match = url.match(regExp); return (match && match[1].length === 11) ? match[1] : null;
+        }
+
+        function isAcademiaCategory(cat) { return cat && (cat.toLowerCase().includes('curso') || cat.toLowerCase().includes('tutorial')); }
+
+        async function loadVideos() {
+            try {
+                const response = await fetch(API_URL);
+                const rawData = await response.json();
+                const videos = rawData.map(item => ({
+                    id: item.id, title: item.titulo || 'Sin Título', desc: item.descripcion || '',
+                    category: (item.categoria || '').trim(), ytId: getYouTubeId(item.link),
+                    thumbnail: getYouTubeId(item.link) ? `https://img.youtube.com/vi/${getYouTubeId(item.link)}/maxresdefault.jpg` : ''
+                })).filter(v => v.ytId !== null);
+
+                allTutorials = videos.filter(v => isAcademiaCategory(v.category));
+                allPortfolio = videos.filter(v => !isAcademiaCategory(v.category));
+                filteredTutorials = [...allTutorials];
+                tutorialCategories = ['Todos', ...Array.from(new Set(allTutorials.map(v => v.category))).sort()];
+
+                renderPortfolioPage(1); renderTutorialFilters(); renderTutorialsPage(1);
+            } catch (error) { 
+                console.error("Error al cargar videos:", error);
+                document.getElementById('portfolio-grid').innerHTML = '<p class="col-span-full text-red-400 text-center py-10">Error al cargar el servidor. Verifica tu conexión.</p>';
+            }
+        }
+
+        function renderTutorialFilters() {
+            const container = document.getElementById('tutoriales-filters'); container.innerHTML = '';
+            if (tutorialCategories.length <= 1) return;
+            tutorialCategories.forEach(cat => {
+                const btn = document.createElement('button');
+                btn.className = cat === currentTutorialFilter ? "px-4 py-1.5 rounded-full text-xs md:text-sm font-semibold bg-apple-green text-black border border-apple-green shadow-[0_0_15px_rgba(206,250,3,0.3)] transform scale-105 transition-all" : "px-4 py-1.5 rounded-full text-xs md:text-sm font-medium bg-white/5 text-apple-gray border border-white/10 hover:bg-white/10 hover:text-white transition-all";
+                btn.innerText = cat;
+                btn.onclick = () => { currentTutorialFilter = cat; filteredTutorials = cat === 'Todos' ? [...allTutorials] : allTutorials.filter(v => v.category === cat); renderTutorialFilters(); renderTutorialsPage(1); };
+                container.appendChild(btn);
+            });
+        }
+
+        function renderPortfolioPage(page) {
+            const startIndex = (page-1)*ITEMS_PER_PAGE_PORTFOLIO;
+            renderGrid(allPortfolio.slice(startIndex, startIndex + ITEMS_PER_PAGE_PORTFOLIO), 'portfolio-grid', false);
+            renderPaginationControls(allPortfolio.length, ITEMS_PER_PAGE_PORTFOLIO, page, 'portfolio-pagination', (p) => { renderPortfolioPage(p); scrollToSection('portfolio'); });
+        }
+
+        function renderTutorialsPage(page) {
+            const startIndex = (page-1)*ITEMS_PER_PAGE_TUTORIALS;
+            renderGrid(filteredTutorials.slice(startIndex, startIndex + ITEMS_PER_PAGE_TUTORIALS), 'tutoriales-grid', true);
+            renderPaginationControls(filteredTutorials.length, ITEMS_PER_PAGE_TUTORIALS, page, 'tutoriales-pagination', (p) => { renderTutorialsPage(p); scrollToSection('tutoriales-filters'); });
+        }
+
+        function renderGrid(data, containerId, isVertical) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = data.length ? '' : '<p class="col-span-full text-apple-gray text-center py-10">Sin videos.</p>';
+            data.forEach(v => {
+                const card = document.createElement('div');
+                card.className = "group cursor-pointer glass-card rounded-2xl overflow-hidden hover:shadow-apple-hover transition-all duration-300 transform hover:-translate-y-1 flex flex-col fade-in";
+                const aspectClass = isVertical ? 'aspect-[9/16]' : 'aspect-video';
+                card.innerHTML = `<div class="relative w-full ${aspectClass} bg-black overflow-hidden shrink-0"><img src="${v.thumbnail}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-90 group-hover:opacity-100"><div class="play-overlay absolute inset-0 bg-black/40 flex items-center justify-center"><div class="w-10 h-10 md:w-12 md:h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/30 text-white shadow-lg"><i class="fa-solid fa-play ml-1"></i></div></div><div class="absolute top-2 right-2 bg-black/60 backdrop-blur-md px-2.5 py-0.5 rounded-full text-[9px] font-bold text-white/90 border border-white/10 uppercase">${v.category}</div></div><div class="p-3 md:p-4 flex flex-col flex-1"><h3 class="text-sm font-semibold text-white mb-1.5 line-clamp-2">${v.title}</h3><p class="text-[11px] md:text-xs text-apple-gray line-clamp-2">${v.desc}</p></div>`;
+                card.onclick = () => openModal(v); container.appendChild(card);
+            });
+        }
+
+        function renderPaginationControls(total, items, current, containerId, callback) {
+            const container = document.getElementById(containerId);
+            const totalPages = Math.ceil(total / items); container.innerHTML = '';
+            if (totalPages <= 1) return;
+            for (let i = 1; i <= totalPages; i++) {
+                const btn = document.createElement('button'); btn.innerText = i;
+                btn.className = `w-10 h-10 rounded-full flex items-center justify-center text-sm border transition-colors ${i===current?'bg-apple-green text-black font-bold border-apple-green shadow-[0_0_10px_rgba(206,250,3,0.2)]':'bg-white/5 text-apple-text border-white/10 hover:bg-white/10'}`;
+                btn.onclick = () => callback(i); container.appendChild(btn);
+            }
+        }
+
+        function openModal(v) {
+            const isVertical = isAcademiaCategory(v.category);
+            const modalContent = document.getElementById('modalContent');
+            const iframeContainer = document.getElementById('iframeContainer');
+            const textContainer = document.getElementById('modalTextContainer');
+            
+            if (isVertical) {
+                modalContent.className = "relative w-full max-w-4xl bg-apple-card rounded-2xl shadow-2xl overflow-hidden border border-white/10 flex flex-col md:flex-row max-h-[90vh]";
+                iframeContainer.className = "w-full md:w-[350px] lg:w-[400px] shrink-0 aspect-[9/16] bg-black";
+                textContainer.className = "p-6 md:p-10 bg-apple-card border-t md:border-t-0 md:border-l border-white/5 flex-1 flex flex-col justify-center overflow-y-auto no-scrollbar";
+                textContainer.innerHTML = `<div class="bg-apple-green/20 text-apple-green px-3 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase mb-4 w-max border border-apple-green/20">${v.category}</div><h2 class="text-2xl md:text-3xl font-bold text-white mb-4 leading-tight">${v.title}</h2><p class="text-apple-gray text-sm md:text-base leading-relaxed">${v.desc || "Sin descripción."}</p>`;
+                document.getElementById('modalTopBar').classList.add('hidden');
+            } else {
+                modalContent.className = "relative w-full max-w-5xl bg-apple-card rounded-2xl shadow-2xl overflow-hidden border border-white/10 flex flex-col";
+                iframeContainer.className = "w-full aspect-video bg-black shrink-0";
+                textContainer.className = "p-6 bg-apple-card border-t border-white/5 flex flex-col";
+                document.getElementById('modalTitle').textContent = v.title;
+                textContainer.innerHTML = `<p class="text-apple-gray text-sm md:text-base leading-relaxed">${v.desc || "Sin descripción."}</p>`;
+                document.getElementById('modalTopBar').classList.remove('hidden');
+            }
+            
+            iframeContainer.innerHTML = `<iframe src="https://www.youtube.com/embed/${v.ytId}?autoplay=1&mute=1&rel=0" class="w-full h-full border-0" allowfullscreen></iframe>`;
+            document.getElementById('videoModal').classList.remove('hidden'); document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('videoModal').classList.add('hidden');
+            document.getElementById('iframeContainer').innerHTML = ''; document.body.style.overflow = '';
+        }
+
+        // CHATBOT Y HERRAMIENTAS EXTERNAS
+        function toggleChat() {
+            const chatWindow = document.getElementById('chatWindow'); const botIcon = document.getElementById('botIcon');
+            if (chatWindow.classList.contains('hidden')) {
+                chatWindow.classList.remove('hidden'); botIcon.classList.replace('fa-comments', 'fa-xmark');
+                if (normativaData.length === 0) fetch(API_URL + "?tipo=reglamento").then(r=>r.json()).then(d=>normativaData=d);
+            } else {
+                chatWindow.classList.add('hidden'); botIcon.classList.replace('fa-xmark', 'fa-comments');
+            }
+        }
+
+        window.triggerBotSearch = function(tema) { document.getElementById('botSearchInput').value = tema; searchNormativa(); };
+
+        // Nueva función para el Paginador del Menú
+        window.loadMoreMenu = function(btn, startIndex) {
+            let temasSet = new Set();
+            normativaData.forEach(item => { if(item.keywords){ let pt = item.keywords.split(',')[0].trim(); if(pt) temasSet.add(pt.charAt(0).toUpperCase() + pt.slice(1)); } });
+            let allTopics = Array.from(temasSet);
+            let nextTopics = allTopics.slice(startIndex, startIndex + 5);
+            
+            let html = nextTopics.map(tema => `<button onclick="triggerBotSearch('${tema}')" class="block w-full text-left px-3 py-2 mt-1.5 text-xs font-medium bg-white/5 border border-white/10 rounded-lg hover:bg-apple-green hover:text-black transition-all fade-in">${tema}</button>`).join('');
+            
+            if (startIndex + 5 < allTopics.length) {
+                html += `<button onclick="loadMoreMenu(this, ${startIndex + 5})" class="block w-full text-center px-3 py-2 mt-2 text-xs font-bold text-apple-green bg-white/5 border border-apple-green/30 rounded-lg hover:bg-apple-green hover:text-black transition-all fade-in">Ver más opciones <i class="fa-solid fa-chevron-down ml-1"></i></button>`;
+            }
+            
+            btn.insertAdjacentHTML('beforebegin', html);
+            btn.remove();
+            
+            const chatBody = document.getElementById('chatBody');
+            chatBody.scrollTop = chatBody.scrollHeight;
+        };
+
+        function searchNormativa() {
+            const input = document.getElementById('botSearchInput');
+            const query = input.value.toLowerCase().trim();
+            const chatBody = document.getElementById('chatBody');
+            if (!query) return;
+
+            chatBody.innerHTML += `<div class="bg-apple-green/20 text-apple-green p-3 rounded-2xl rounded-tr-none text-xs self-end ml-auto w-max max-w-[80%] border border-apple-green/20">${input.value}</div>`;
+            input.value = "";
+
+            // Detectores de intención
+            const isMenuRequest = ["menu", "menú", "opciones", "ayuda", "temas"].includes(query);
+            const isClimaRequest = ["estado del cielo", "clima", "viento", "solar", "kp", "satelite"].some(kw => query.includes(kw));
+            const isLuzRequest = ["condiciones de filmación", "luz", "golden", "atardecer", "amanecer", "sol", "hora dorada"].some(kw => query.includes(kw));
+            const isLluviaRequest = ["visibilidad y lluvia", "lluvia", "visibilidad", "niebla", "agua", "precipitacion"].some(kw => query.includes(kw));
+            const isUvRequest = ["índice uv", "uv", "piloto", "protector"].some(kw => query.includes(kw));
+
+            setTimeout(() => {
+                if (isMenuRequest) {
+                    let temasSet = new Set();
+                    normativaData.forEach(item => { if(item.keywords){ let pt = item.keywords.split(',')[0].trim(); if(pt) temasSet.add(pt.charAt(0).toUpperCase() + pt.slice(1)); } });
+                    
+                    let allTopics = Array.from(temasSet);
+                    
+                    let botonesHTML = `
+                        <button onclick="triggerBotSearch('Estado del Cielo')" class="flex items-center w-full text-left px-3 py-2 mt-1 text-xs font-bold text-black bg-apple-green rounded-lg hover:opacity-80 transition-all"><i class="fa-solid fa-cloud-sun w-5"></i> Estado del Cielo (Viento)</button>
+                        <button onclick="triggerBotSearch('Golden Hour')" class="flex items-center w-full text-left px-3 py-2 mt-1.5 text-xs font-medium text-orange-300 bg-white/10 border border-white/5 rounded-lg hover:bg-white/20 transition-all"><i class="fa-solid fa-camera w-5"></i> Luz / Golden Hour</button>
+                        <button onclick="triggerBotSearch('Lluvia y Visibilidad')" class="flex items-center w-full text-left px-3 py-2 mt-1.5 text-xs font-medium text-blue-300 bg-white/10 border border-white/5 rounded-lg hover:bg-white/20 transition-all"><i class="fa-solid fa-cloud-rain w-5"></i> Lluvia y Visibilidad</button>
+                        <button onclick="triggerBotSearch('Índice UV')" class="flex items-center w-full text-left px-3 py-2 mt-1.5 text-xs font-medium text-yellow-300 bg-white/10 border border-white/5 rounded-lg hover:bg-white/20 transition-all"><i class="fa-solid fa-glasses w-5"></i> Índice UV (Piloto)</button>
+                        <div class="w-full h-px bg-white/10 my-3"></div>
+                    `;
+                    
+                    botonesHTML += allTopics.slice(0, 5).map(tema => `<button onclick="triggerBotSearch('${tema}')" class="block w-full text-left px-3 py-2 mt-1.5 text-xs font-medium bg-white/5 border border-white/10 rounded-lg hover:bg-apple-green hover:text-black transition-all">${tema}</button>`).join('');
+
+                    if (allTopics.length > 5) {
+                        botonesHTML += `<button onclick="loadMoreMenu(this, 5)" class="block w-full text-center px-3 py-2 mt-2 text-xs font-bold text-apple-green bg-white/5 border border-apple-green/30 rounded-lg hover:bg-apple-green hover:text-black transition-all">Ver más opciones <i class="fa-solid fa-chevron-down ml-1"></i></button>`;
+                    }
+
+                    chatBody.innerHTML += `<div class="bg-white/10 p-3 rounded-2xl rounded-tl-none text-xs leading-relaxed border border-white/5 fade-in w-full"><b class="text-apple-green">Herramientas y Normativa:</b><div class="mt-2">${botonesHTML}</div></div>`;
+                } 
+                else if (isClimaRequest) { ejecutarWidgetExterno('Clima', fetchClimaWidget); }
+                else if (isLuzRequest) { ejecutarWidgetExterno('Luz', fetchLuzWidget); }
+                else if (isLluviaRequest) { ejecutarWidgetExterno('Lluvia', fetchLluviaWidget); }
+                else if (isUvRequest) { ejecutarWidgetExterno('UV', fetchUVWidget); }
+                else {
+                    const res = normativaData.find(i => (i.keywords && i.keywords.toLowerCase().includes(query)) || (i.pregunta && i.pregunta.toLowerCase().includes(query)));
+                    if (res) chatBody.innerHTML += `<div class="bg-white/10 p-3 rounded-2xl rounded-tl-none text-xs leading-relaxed border border-white/5 fade-in"><b class="text-apple-green">${res.pregunta}</b><br><br>${res.respuesta}<br><br><small class="text-apple-gray text-[10px]">⚖️ Ref: ${res.referencia}</small></div>`;
+                    else chatBody.innerHTML += `<div class="bg-white/10 p-3 rounded-2xl rounded-tl-none text-xs leading-relaxed border border-white/5 fade-in border-l-2 border-l-yellow-500">Lo siento, no encontré información exacta.<br><br>💡 Escribe <b>"menú"</b> para ver las herramientas y normas disponibles.</div>`;
+                }
+                chatBody.scrollTop = chatBody.scrollHeight;
+            }, 500);
+        }
+
+        // Framework para llamar widgets de APIs externas
+        function ejecutarWidgetExterno(nombre, funcionFetch) {
+            const chatBody = document.getElementById('chatBody');
+            const idLoader = 'load_' + Date.now();
+            chatBody.innerHTML += `<div id="${idLoader}" class="bg-white/10 p-3 rounded-2xl rounded-tl-none text-xs leading-relaxed border border-white/5 fade-in"><i class="fa-solid fa-circle-notch fa-spin text-apple-green mr-2"></i> Conectando satélites para ${nombre}...</div>`;
+            chatBody.scrollTop = chatBody.scrollHeight;
+            funcionFetch().then(htmlStr => {
+                document.getElementById(idLoader)?.remove();
+                chatBody.innerHTML += htmlStr;
+                chatBody.scrollTop = chatBody.scrollHeight;
+            });
+        }
+
+        // WIDGETS DE API
+        async function fetchClimaWidget() {
+            try {
+                const weatherRes = await fetch('https://api.open-meteo.com/v1/forecast?latitude=-34.6037&longitude=-58.3816&current=wind_speed_10m');
+                const windSpeed = (await weatherRes.json()).current.wind_speed_10m;
+                const kpIndex = parseFloat((await (await fetch('https://services.swpc.noaa.gov/products/noaa-planetary-k-index.json')).json()).pop()[1]).toFixed(1);
+                
+                let wColor = windSpeed > 35 ? 'text-red-500' : (windSpeed > 20 ? 'text-yellow-400' : 'text-apple-green');
+                let kColor = kpIndex >= 5 ? 'text-red-500' : (kpIndex >= 4 ? 'text-yellow-400' : 'text-apple-green');
+
+                return `<div class="bg-white/10 p-3 rounded-2xl rounded-tl-none text-xs leading-relaxed border border-t-2 border-t-apple-green fade-in w-full"><b class="text-apple-green"><i class="fa-solid fa-cloud-sun mr-1"></i> Estado del Cielo</b><br><br><div class="flex items-center justify-between bg-black/40 p-2 rounded-lg mb-2 border border-white/5"><span class="text-white/80"><i class="fa-solid fa-wind mr-2"></i>Viento</span><span class="font-bold ${wColor}">${windSpeed} km/h</span></div><div class="flex items-center justify-between bg-black/40 p-2 rounded-lg border border-white/5"><span class="text-white/80"><i class="fa-solid fa-sun mr-2"></i>Índice Kp</span><span class="font-bold ${kColor}">${kpIndex}</span></div></div>`;
+            } catch (e) { return `<div class="bg-white/10 p-3 rounded-2xl rounded-tl-none text-xs border border-red-500 text-red-400">Error conectando al satélite.</div>`; }
+        }
+
+        async function fetchLuzWidget() {
+            try {
+                // Sunrise-Sunset API
+                const res = await fetch('https://api.sunrise-sunset.org/json?lat=-34.6037&lng=-58.3816&formatted=0');
+                const data = await res.json();
+                
+                const sunset = new Date(data.results.sunset);
+                const goldenHour = new Date(sunset.getTime() - 60 * 60 * 1000); // 1 hora antes
+                
+                const timeOpt = { hour: '2-digit', minute: '2-digit', hour12: false };
+
+                return `<div class="bg-white/10 p-3 rounded-2xl rounded-tl-none text-xs leading-relaxed border border-t-2 border-t-orange-400 fade-in w-full"><b class="text-orange-300"><i class="fa-solid fa-camera mr-1"></i> Condiciones de Filmación</b><br><p class="mt-2 mb-3 text-apple-gray">El horario perfecto para levantar el dron con luz cinematográfica hoy es:</p><div class="flex flex-col gap-2"><div class="flex justify-between bg-black/40 p-2 rounded-lg border border-orange-500/30"><span class="text-orange-300"><i class="fa-solid fa-bolt mr-2"></i>Golden Hour</span><span class="font-bold text-white">Inicia ${goldenHour.toLocaleTimeString('es-AR', timeOpt)}</span></div><div class="flex justify-between bg-black/40 p-2 rounded-lg border border-white/5"><span class="text-white/60"><i class="fa-solid fa-moon mr-2"></i>Atardecer (Fin)</span><span class="font-bold text-white/60">${sunset.toLocaleTimeString('es-AR', timeOpt)}</span></div></div></div>`;
+            } catch (e) { return `<div class="bg-white/10 p-3 rounded-2xl rounded-tl-none text-xs border border-red-500 text-red-400">Error conectando con observatorio.</div>`; }
+        }
+
+        async function fetchLluviaWidget() {
+            try {
+                const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=-34.6037&longitude=-58.3816&current=precipitation,visibility');
+                const data = await res.json();
+                const rain = data.current.precipitation;
+                const visKm = (data.current.visibility / 1000).toFixed(1);
+                
+                let rColor = rain > 0 ? 'text-red-400' : 'text-blue-300';
+                let rIcon = rain > 0 ? 'fa-cloud-showers-heavy' : 'fa-cloud';
+                let vColor = visKm < 5 ? 'text-yellow-400' : 'text-apple-green';
+
+                return `<div class="bg-white/10 p-3 rounded-2xl rounded-tl-none text-xs leading-relaxed border border-t-2 border-t-blue-400 fade-in w-full"><b class="text-blue-300"><i class="fa-solid fa-cloud-rain mr-1"></i> Riesgo para Equipos</b><br><br><div class="flex justify-between bg-black/40 p-2 rounded-lg mb-2 border border-white/5"><span class="text-white/80"><i class="fa-solid ${rIcon} mr-2"></i>Precipitación</span><span class="font-bold ${rColor}">${rain} mm</span></div><div class="flex justify-between bg-black/40 p-2 rounded-lg border border-white/5"><span class="text-white/80"><i class="fa-solid fa-eye mr-2"></i>Visibilidad</span><span class="font-bold ${vColor}">${visKm} km</span></div></div>`;
+            } catch (e) { return `<div class="bg-white/10 p-3 rounded-2xl rounded-tl-none text-xs border border-red-500 text-red-400">Error conectando a radares.</div>`; }
+        }
+
+        async function fetchUVWidget() {
+            try {
+                const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=-34.6037&longitude=-58.3816&current=uv_index');
+                const uv = (await res.json()).current.uv_index;
+                
+                let uColor = 'text-apple-green'; let uText = 'Ideal - Sin riesgo';
+                if (uv >= 8) { uColor = 'text-red-500'; uText = 'Extremo - Cubrir piel y tablet'; }
+                else if (uv >= 6) { uColor = 'text-yellow-400'; uText = 'Alto - Usa protector solar'; }
+
+                return `<div class="bg-white/10 p-3 rounded-2xl rounded-tl-none text-xs leading-relaxed border border-t-2 border-t-yellow-400 fade-in w-full"><b class="text-yellow-400"><i class="fa-solid fa-glasses mr-1"></i> Cuidado del Piloto</b><br><br><div class="text-center bg-black/40 p-3 rounded-lg border border-white/5"><div class="text-2xl font-bold ${uColor} mb-1">${uv}</div><div class="font-medium text-white/80">${uText}</div></div></div>`;
+            } catch (e) { return `<div class="bg-white/10 p-3 rounded-2xl rounded-tl-none text-xs border border-red-500 text-red-400">Error conectando con satélite.</div>`; }
+        }
+
+        document.getElementById('botSearchInput')?.addEventListener('keypress', e => { if (e.key === 'Enter') searchNormativa(); });
+        
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn'); btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Enviando...';
+            fetch(CONTACT_API_URL, { method: 'POST', body: new FormData(e.target), mode: 'no-cors' }).then(() => { e.target.reset(); document.getElementById('formSuccess').classList.remove('hidden'); }).finally(() => { btn.disabled = false; btn.innerHTML = '<span>Enviar Mensaje</span><i class="fa-solid fa-paper-plane text-sm"></i>'; });
+        });
+
+        window.onload = loadVideos;
+        function scrollToSection(id) { const target = document.getElementById(id); if(target) target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+        document.addEventListener('keydown', e => { if(e.key === "Escape") closeModal(); });
+    </script>
+</body>
+</html>
