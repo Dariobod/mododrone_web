@@ -143,3 +143,4 @@ Este documento registra la arquitectura completa, el desglose de secciones, comp
   - Prueba y confirmación exitosa de flujo CI/CD automático con Cloudflare Pages (reversión del menú a "Contacto").
   - **Tag `v1.0.0`**: Creación y push de la etiqueta de versión estable de referencia a GitHub.
   - **Nueva Sección Reels**: Implementación de la sección `#reels` entre Portfolio y Tutoriales para mostrar videos categorizados como `Reel-*` en formato vertical `9:16` con paginador y filtros dinámicos.
+  - **Favicon**: Configuración del icono de la barra de navegación como favicon del sitio en `<head>`.
