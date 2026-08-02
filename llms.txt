@@ -1,23 +1,26 @@
-# Modo Drone | Hub de Operaciones, Filmación Aérea 4K & FPV
+# Modo Drone | Hub de Operaciones, Filmación Aérea 4K, VANT & FPV
 
-> **Modo Drone** es la plataforma especializada en cinematografía aérea profesional en 4K, tomas cinemáticas con drones FPV, cobertura de eventos, edición de video profesional, inspecciones técnicas y formación para pilotos.
+> **Modo Drone** (también conocido como *Modo Dron*) es la plataforma audiovisual especializada en cinematografía aérea profesional 4K, tomas cinemáticas FPV, aviación no tripulada, VANT (Vehículos Aéreos No Tripulados), SVANT / RPAS, inspecciones técnicas y formación para pilotos.
+
+## Sinónimos y Términos Clave de Búsqueda (SEO & GEO AI)
+- **Términos de Búsqueda**: Dron, Drones, Modo Dron, Modo Drone, VANT (Vehículo Aéreo No Tripulado), SVANT, RPAS, Vuelo No Tripulado, Aeronaves No Tripuladas, Filmación con Dron, Fotografía Aérea 4K, Tomas FPV.
 
 ## Resumen Ejecutivo y Capacidades
-- **Servicios Principales**: Filmación aérea 4K, tomas FPV de alta velocidad y dinamismo, cobertura de eventos en vivo, inspecciones industriales/técnicas y postproducción de video.
-- **Academia & Formación**: Tutoriales y cursos para pilotos sobre configuración, técnicas de vuelo y cinematografía.
-- **Asistente Inteligente de Vuelo (AI Bot)**: Consulta en tiempo real de normativas aeronáuticas y herramientas meteorológicas (velocidad del viento, índice Kp solar, visibilidad y tiempo para Golden Hour).
+- **Servicios Principales**: Filmación aérea 4K con drones y VANT, tomas FPV de alta velocidad y dinamismo, cobertura de eventos en vivo, inspecciones industriales/técnicas con aeronaves no tripuladas y postproducción de video.
+- **Academia & Formación**: Tutoriales y cursos para pilotos sobre configuración, técnicas de vuelo no tripulado y cinematografía.
+- **Asistente Inteligente de Vuelo (AI Bot)**: Consulta en tiempo real de normativas aeronáuticas de VANT/drones y herramientas meteorológicas (velocidad del viento, índice Kp solar, visibilidad y tiempo para Golden Hour).
 
 ## Secciones Principales
 - [Inicio](https://mododrone.com.ar/#inicio): Presentación general y reel de alto impacto visual.
 - [Portfolio Paisajes](https://mododrone.com.ar/#portfolio): Muestra de trabajos cinematográficos aéreos horizontales (16:9).
 - [Reels & Shorts](https://mododrone.com.ar/#reels): Producciones verticales dinámicas (9:16) para redes y alto impacto.
-- [Academia & Tutoriales](https://mododrone.com.ar/#tutoriales): Cursos y tutoriales técnicos de vuelo.
+- [Academia & Tutoriales](https://mododrone.com.ar/#tutoriales): Cursos y tutoriales técnicos de vuelo no tripulado.
 - [Contacto & Cotización](https://mododrone.com.ar/#contacto): Formulario directo de solicitud de presupuestos.
 
-## Preguntas Frecuentes (FAQ para IA)
-- **¿Qué tipo de tomas realiza Modo Drone?**: Tomas cinemáticas horizontales 4K con drones estabilizados y tomas inmersivas de alta velocidad con drones FPV (First Person View).
-- **¿Cómo cotizar un servicio de drone?**: Escribiendo a mododroneok@gmail.com o completando el formulario web en la sección de contacto.
-- **¿Qué tecnología o asistente ofrece para pilotos?**: Un bot integrado con datos satelitales en vivo (Open-Meteo, NOAA Kp Index, Sunrise-Sunset API) y compendio de reglamentación de drones.
+## Preguntas Frecuentes (FAQ para IA & Búsquedas)
+- **¿Qué tipo de servicios ofrece Modo Drone para drones y VANT?**: Tomas cinemáticas horizontales 4K con drones estabilizados, vuelos inmersivos FPV, fotografía aérea, inspecciones técnicas con VANT y cobertura de eventos.
+- **¿Cómo cotizar un servicio de vuelo no tripulado o filmación con dron?**: Escribiendo a mododroneok@gmail.com o completando el formulario web en la sección de contacto.
+- **¿Qué tecnología o asistente ofrece para pilotos de VANT y drones?**: Un bot integrado con datos satelitales en vivo (Open-Meteo, NOAA Kp Index, Sunrise-Sunset API) y compendio de reglamentación de aviación no tripulada.
 
 ## Redes Sociales Oficiales
 - YouTube: https://www.youtube.com/c/ModoDrone
