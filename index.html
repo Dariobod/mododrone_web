@@ -524,7 +524,24 @@
             data.forEach(v => {
                 const card = document.createElement('div');
                 card.className = "group cursor-pointer glass-card rounded-2xl overflow-hidden hover:shadow-apple-hover transition-all duration-300 transform hover:-translate-y-1 flex flex-col fade-in shrink-0 w-[200px] sm:w-[220px] md:w-[240px] snap-start";
-                card.innerHTML = `<div class="relative w-full aspect-[9/16] bg-black overflow-hidden shrink-0"><iframe src="https://www.youtube.com/embed/${v.ytId}?autoplay=1&mute=1&loop=1&playlist=${v.ytId}&controls=0&modestbranding=1&rel=0&playsinline=1" class="w-full h-full border-0 pointer-events-none object-cover" allow="autoplay; encrypted-media" playsinline></iframe><div class="absolute inset-0 bg-black/10 z-10"></div><div class="absolute top-2 right-2 bg-black/60 backdrop-blur-md px-2.5 py-0.5 rounded-full text-[9px] font-bold text-white/90 border border-white/10 uppercase z-20">${v.category}</div></div><div class="p-3 md:p-4 flex flex-col flex-1"><h3 class="text-sm font-semibold text-white mb-1.5 line-clamp-2">${v.title}</h3><p class="text-[11px] md:text-xs text-apple-gray line-clamp-2">${v.desc}</p></div>`;
+                card.innerHTML = `<div class="relative w-full aspect-[9/16] bg-black overflow-hidden shrink-0"><img src="${v.thumbnail}" alt="${v.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-90 group-hover:opacity-100 reel-thumb"><div class="reel-player absolute inset-0 hidden z-10"></div><div class="absolute inset-0 bg-black/10 z-20 pointer-events-none"></div><div class="absolute top-2 right-2 bg-black/60 backdrop-blur-md px-2.5 py-0.5 rounded-full text-[9px] font-bold text-white/90 border border-white/10 uppercase z-20">${v.category}</div></div><div class="p-3 md:p-4 flex flex-col flex-1"><h3 class="text-sm font-semibold text-white mb-1.5 line-clamp-2">${v.title}</h3><p class="text-[11px] md:text-xs text-apple-gray line-clamp-2">${v.desc}</p></div>`;
+                
+                const playerContainer = card.querySelector('.reel-player');
+                const thumb = card.querySelector('.reel-thumb');
+
+                card.onmouseenter = () => {
+                    if (playerContainer && !playerContainer.innerHTML) {
+                        playerContainer.innerHTML = `<iframe src="https://www.youtube.com/embed/${v.ytId}?autoplay=1&mute=1&loop=1&playlist=${v.ytId}&controls=0&modestbranding=1&rel=0&playsinline=1" class="w-full h-full border-0 pointer-events-none object-cover" allow="autoplay; encrypted-media" playsinline></iframe>`;
+                    }
+                    playerContainer?.classList.remove('hidden');
+                    thumb?.classList.add('hidden');
+                };
+
+                card.onmouseleave = () => {
+                    playerContainer?.classList.add('hidden');
+                    thumb?.classList.remove('hidden');
+                };
+
                 card.onclick = () => openModal(v);
                 container.appendChild(card);
             });
