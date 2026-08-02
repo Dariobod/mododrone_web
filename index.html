@@ -19,6 +19,10 @@
     <!-- Iconos FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+    <!-- Lenis Smooth Scroll (Inercia de Scroll) -->
+    <link rel="stylesheet" href="https://unpkg.com/lenis@1.1.18/dist/lenis.css">
+    <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+
     <!-- Configuración Tailwind -->
     <script>
         tailwind.config = {
@@ -417,6 +421,7 @@
         }
 
         function openModal(v) {
+            if (typeof lenis !== 'undefined') lenis.stop();
             const isVertical = isAcademiaCategory(v.category) || isReelCategory(v.category);
             const modalContent = document.getElementById('modalContent');
             const iframeContainer = document.getElementById('iframeContainer');
@@ -442,6 +447,7 @@
         }
 
         function closeModal() {
+            if (typeof lenis !== 'undefined') lenis.start();
             document.getElementById('videoModal').classList.add('hidden');
             document.getElementById('iframeContainer').innerHTML = ''; document.body.style.overflow = '';
         }
@@ -610,7 +616,28 @@
         });
 
         window.onload = loadVideos;
-        function scrollToSection(id) { const target = document.getElementById(id); if(target) target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+
+        // Configuración de Scroll Suave con Inercia (Lenis)
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            smoothWheel: true,
+            wheelMultiplier: 1.0,
+            touchMultiplier: 1.5
+        });
+
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        function scrollToSection(id) { 
+            const target = document.getElementById(id); 
+            if(target) {
+                lenis.scrollTo(target, { duration: 1.2 });
+            }
+        }
         document.addEventListener('keydown', e => { if(e.key === "Escape") closeModal(); });
     </script>
 </body>
