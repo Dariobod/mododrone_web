@@ -152,3 +152,4 @@ Este documento registra la arquitectura completa, el desglose de secciones, comp
     - **Rastreadores y Crawlers**: Creación de `robots.txt` permitiendo explícitamente bots de IA (`GPTBot`, `PerplexityBot`, `ClaudeBot`, `Google-Extended`, etc.).
     - **Indexación y GEO Standard**: Creación del mapa del sitio `sitemap.xml` y del estándar abierto `llms.txt` para motores de búsqueda conversacionales y LLMs.
     - **Optimización Semántica & Sinónimos**: Incorporación explícita de variaciones clave en SEO/GEO (`dron`, `drones`, `VANT - Vehículos Aéreos No Tripulados`, `SVANT`, `RPAS`, `modo dron`, `vuelo no tripulado` y `aeronave no tripulada`) en meta tags, JSON-LD `alternateName`, subtítulos visibles y `llms.txt`.
+  - **Prueba de UI - Carrusel de Reels**: Modificación temporal de la sección `#reels` para mostrar las tarjetas en una única línea horizontal con desplazamiento fluido y flechas laterales de navegación (`scrollReelsCarousel`).
