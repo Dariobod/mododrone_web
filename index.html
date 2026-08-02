@@ -73,6 +73,7 @@
                 <div class="hidden md:flex space-x-8 text-sm font-medium text-apple-gray">
                     <a onclick="scrollToSection('inicio')" class="cursor-pointer hover:text-white transition-colors">Inicio</a>
                     <a onclick="scrollToSection('portfolio')" class="cursor-pointer hover:text-white transition-colors">Portfolio</a>
+                    <a onclick="scrollToSection('reels')" class="cursor-pointer hover:text-white transition-colors">Reels</a>
                     <a onclick="scrollToSection('tutoriales')" class="cursor-pointer hover:text-white transition-colors">Tutoriales</a>
                     <a onclick="scrollToSection('contacto')" class="cursor-pointer hover:text-white transition-colors">Contacto</a>
                 </div>
@@ -127,6 +128,38 @@
                 </div>
 
                 <div id="portfolio-pagination" class="flex justify-center items-center mt-10 gap-2"></div>
+            </div>
+        </section>
+
+        <!-- Sección Reels -->
+        <section id="reels" class="py-16 bg-apple-card/20 border-t border-white/5">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4">
+                    <div class="text-center md:text-left">
+                        <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-apple-text">Reels & Shorts.</h2>
+                        <p class="text-apple-gray mt-2 text-lg">Contenido dinámico e imponentes tomas en formato vertical.</p>
+                    </div>
+                    <a href="https://instagram.com/modo_drone" target="_blank" class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white px-5 py-2 rounded-full text-sm font-medium transition-colors border border-white/10 mx-auto md:mx-0">
+                        <i class="fa-brands fa-instagram text-pink-500"></i> Ver en Instagram
+                    </a>
+                </div>
+                
+                <div id="reels-filters" class="flex flex-wrap justify-center md:justify-start gap-2 md:gap-3 mb-8">
+                    <!-- Skeletons de filtros -->
+                    <div class="w-20 h-8 bg-white/10 rounded-full animate-pulse"></div>
+                    <div class="w-24 h-8 bg-white/10 rounded-full animate-pulse"></div>
+                </div>
+                
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-5" id="reels-grid">
+                    <!-- Skeletons verticales -->
+                    <div class="glass-card rounded-2xl overflow-hidden flex flex-col animate-pulse border border-white/5"><div class="w-full aspect-[9/16] bg-white/10"></div><div class="p-3 space-y-2"><div class="h-3 bg-white/10 rounded w-full"></div><div class="h-2 bg-white/10 rounded w-4/5"></div></div></div>
+                    <div class="glass-card rounded-2xl overflow-hidden flex flex-col animate-pulse border border-white/5"><div class="w-full aspect-[9/16] bg-white/10"></div><div class="p-3 space-y-2"><div class="h-3 bg-white/10 rounded w-full"></div><div class="h-2 bg-white/10 rounded w-4/5"></div></div></div>
+                    <div class="glass-card rounded-2xl overflow-hidden flex flex-col animate-pulse border border-white/5 hidden sm:flex"><div class="w-full aspect-[9/16] bg-white/10"></div><div class="p-3 space-y-2"><div class="h-3 bg-white/10 rounded w-full"></div><div class="h-2 bg-white/10 rounded w-4/5"></div></div></div>
+                    <div class="glass-card rounded-2xl overflow-hidden flex flex-col animate-pulse border border-white/5 hidden md:flex"><div class="w-full aspect-[9/16] bg-white/10"></div><div class="p-3 space-y-2"><div class="h-3 bg-white/10 rounded w-full"></div><div class="h-2 bg-white/10 rounded w-4/5"></div></div></div>
+                    <div class="glass-card rounded-2xl overflow-hidden flex flex-col animate-pulse border border-white/5 hidden lg:flex"><div class="w-full aspect-[9/16] bg-white/10"></div><div class="p-3 space-y-2"><div class="h-3 bg-white/10 rounded w-full"></div><div class="h-2 bg-white/10 rounded w-4/5"></div></div></div>
+                </div>
+                
+                <div id="reels-pagination" class="flex justify-center items-center mt-10 gap-2"></div>
             </div>
         </section>
 
@@ -273,8 +306,8 @@
         const API_URL = "https://script.google.com/macros/s/AKfycbxh8Fy1ANi-PfDz3z3neKNfQlqZXJXMHBU2iFDPUP7tFBEVObfnQYWx0In2q3K2NlFQrA/exec";
         const CONTACT_API_URL = "https://script.google.com/macros/s/AKfycbzawIZGAOFMLRIM4Z-DGfIgXQDec57eastP4yIvM7ypw4-EsEAwggGLo39HhmiIMndijA/exec";
         
-        let allPortfolio = [], allTutorials = [], filteredTutorials = [], tutorialCategories = [], currentTutorialFilter = 'Todos';
-        const ITEMS_PER_PAGE_PORTFOLIO = 8, ITEMS_PER_PAGE_TUTORIALS = 10;
+        let allPortfolio = [], allReels = [], filteredReels = [], reelCategories = [], currentReelFilter = 'Todos', allTutorials = [], filteredTutorials = [], tutorialCategories = [], currentTutorialFilter = 'Todos';
+        const ITEMS_PER_PAGE_PORTFOLIO = 8, ITEMS_PER_PAGE_REELS = 10, ITEMS_PER_PAGE_TUTORIALS = 10;
         let normativaData = [];
 
         function getYouTubeId(url) {
@@ -283,6 +316,7 @@
             const match = url.match(regExp); return (match && match[1].length === 11) ? match[1] : null;
         }
 
+        function isReelCategory(cat) { return cat && cat.toLowerCase().startsWith('reel'); }
         function isAcademiaCategory(cat) { return cat && (cat.toLowerCase().includes('curso') || cat.toLowerCase().includes('tutorial')); }
 
         async function loadVideos() {
@@ -295,16 +329,35 @@
                     thumbnail: getYouTubeId(item.link) ? `https://img.youtube.com/vi/${getYouTubeId(item.link)}/maxresdefault.jpg` : ''
                 })).filter(v => v.ytId !== null);
 
+                allReels = videos.filter(v => isReelCategory(v.category));
                 allTutorials = videos.filter(v => isAcademiaCategory(v.category));
-                allPortfolio = videos.filter(v => !isAcademiaCategory(v.category));
+                allPortfolio = videos.filter(v => !isAcademiaCategory(v.category) && !isReelCategory(v.category));
+                
+                filteredReels = [...allReels];
+                reelCategories = ['Todos', ...Array.from(new Set(allReels.map(v => v.category))).sort()];
+
                 filteredTutorials = [...allTutorials];
                 tutorialCategories = ['Todos', ...Array.from(new Set(allTutorials.map(v => v.category))).sort()];
 
-                renderPortfolioPage(1); renderTutorialFilters(); renderTutorialsPage(1);
+                renderPortfolioPage(1);
+                renderReelFilters(); renderReelsPage(1);
+                renderTutorialFilters(); renderTutorialsPage(1);
             } catch (error) { 
                 console.error("Error al cargar videos:", error);
                 document.getElementById('portfolio-grid').innerHTML = '<p class="col-span-full text-red-400 text-center py-10">Error al cargar el servidor. Verifica tu conexión.</p>';
             }
+        }
+
+        function renderReelFilters() {
+            const container = document.getElementById('reels-filters'); container.innerHTML = '';
+            if (reelCategories.length <= 1) return;
+            reelCategories.forEach(cat => {
+                const btn = document.createElement('button');
+                btn.className = cat === currentReelFilter ? "px-4 py-1.5 rounded-full text-xs md:text-sm font-semibold bg-apple-green text-black border border-apple-green shadow-[0_0_15px_rgba(206,250,3,0.3)] transform scale-105 transition-all" : "px-4 py-1.5 rounded-full text-xs md:text-sm font-medium bg-white/5 text-apple-gray border border-white/10 hover:bg-white/10 hover:text-white transition-all";
+                btn.innerText = cat;
+                btn.onclick = () => { currentReelFilter = cat; filteredReels = cat === 'Todos' ? [...allReels] : allReels.filter(v => v.category === cat); renderReelFilters(); renderReelsPage(1); };
+                container.appendChild(btn);
+            });
         }
 
         function renderTutorialFilters() {
@@ -323,6 +376,12 @@
             const startIndex = (page-1)*ITEMS_PER_PAGE_PORTFOLIO;
             renderGrid(allPortfolio.slice(startIndex, startIndex + ITEMS_PER_PAGE_PORTFOLIO), 'portfolio-grid', false);
             renderPaginationControls(allPortfolio.length, ITEMS_PER_PAGE_PORTFOLIO, page, 'portfolio-pagination', (p) => { renderPortfolioPage(p); scrollToSection('portfolio'); });
+        }
+
+        function renderReelsPage(page) {
+            const startIndex = (page-1)*ITEMS_PER_PAGE_REELS;
+            renderGrid(filteredReels.slice(startIndex, startIndex + ITEMS_PER_PAGE_REELS), 'reels-grid', true);
+            renderPaginationControls(filteredReels.length, ITEMS_PER_PAGE_REELS, page, 'reels-pagination', (p) => { renderReelsPage(p); scrollToSection('reels-filters'); });
         }
 
         function renderTutorialsPage(page) {
@@ -355,7 +414,7 @@
         }
 
         function openModal(v) {
-            const isVertical = isAcademiaCategory(v.category);
+            const isVertical = isAcademiaCategory(v.category) || isReelCategory(v.category);
             const modalContent = document.getElementById('modalContent');
             const iframeContainer = document.getElementById('iframeContainer');
             const textContainer = document.getElementById('modalTextContainer');

@@ -67,23 +67,30 @@ Este documento registra la arquitectura completa, el desglose de secciones, comp
 - **Skeletons**: Indicadores de carga animados (`animate-pulse`) previa llegada de datos de la API.
 - **Paginación**: Paginador numérico interactivo (8 elementos por página) con scroll suave automático.
 
-### D. Sección Academia & Tutoriales (`#tutoriales`)
+### D. Sección Reels & Shorts (`#reels`)
+- **Propósito**: Videos verticales dinámicos e imponentes cuya categoría comience con `Reel-`.
+- **Botonera de Filtros (`#reels-filters`)**: Filtros automáticos generados según subcategorías `Reel-*`.
+- **Disposición**: Grid vertical en formato `9:16` (`aspect-[9/16]`).
+- **CTA Directo**: Enlace al perfil oficial de Instagram con icono de Instagram.
+- **Paginación**: Paginación numérica independiente (10 elementos por página).
+
+### E. Sección Academia & Tutoriales (`#tutoriales`)
 - **Propósito**: Cursos, Shorts y guías para pilotos de dron.
 - **Botonera de Filtros (`#tutoriales-filters`)**: Filtros dinámicos por categoría ("Todos", "Cursos", "Tutoriales", etc.) generados a partir de los datos recibidos de la API.
 - **Disposición**: Grid vertical en formato `9:16` (`aspect-[9/16]`) optimizado para formato Shorts / Reels.
 - **CTA Directo**: Botón para ir al canal oficial de YouTube con icono oficial.
 - **Paginación**: Paginador numérico interactivo (10 elementos por página).
 
-### E. Sección Contacto & Cotización (`#contacto`)
+### F. Sección Contacto & Cotización (`#contacto`)
 - **Propósito**: Captura de clientes para proyectos de tomas con dron, edición, eventos e inspecciones técnicas.
 - **Diseño**: Tarjeta contenedora curva (`rounded-[2rem]`) con esfera difuminada brillante (`bg-apple-green/20 blur-3xl`).
 - **Columna Izquierda**: Enlaces de correo (`mododroneok@gmail.com`) y perfil de Instagram.
 - **Columna Derecha**: Formulario interactivo (`#contactForm`) conectado a Google Apps Script con feedback visual (botón con spinner y mensaje de éxito `#formSuccess`).
 
-### F. Footer (`<footer>`)
+### G. Footer (`<footer>`)
 - Fondo súper oscuro (`bg-[#050505]`), iconos sociales circulares con efecto glass, logo en escala de grises y copyright dinámico (`#year`).
 
-### G. Asistente AI / Bot Reglamentario & Meteorológico (`#droneBot`)
+### H. Asistente AI / Bot Reglamentario & Meteorológico (`#droneBot`)
 - **Widget flotante**: Esquina inferior derecha (`fixed bottom-6 right-6 z-[100]`).
 - **Ventana de Chat (`#chatWindow`)**:
   - Cabecera en verde neón con icono de robot.
@@ -95,10 +102,10 @@ Este documento registra la arquitectura completa, el desglose de secciones, comp
   - **Sunrise-Sunset API**: Cálculo de la *Golden Hour* y horario de atardecer para filmación aeronáutica.
   - **Base de Datos de Reglamento**: Consulta dinámica desde Apps Script (`?tipo=reglamento`).
 
-### H. Modal Reproductor de Video (`#videoModal`)
+### I. Modal Reproductor de Video (`#videoModal`)
 - Modal adaptativo inteligente:
   - **Videos horizontales (Portfolio)**: Reproductor de 16:9 centrado con barra superior.
-  - **Videos verticales (Shorts/Tutoriales)**: Formato split en desktop (reproductor 9:16 a la izquierda, descripción con tipografía destacada a la derecha).
+  - **Videos verticales (Shorts/Tutoriales/Reels)**: Formato split en desktop (reproductor 9:16 a la izquierda, descripción con tipografía destacada a la derecha).
 - Cierre mediante tecla `Escape`, botón "X" o clic fuera del contenido (`modalOverlay`).
 
 ---
@@ -107,7 +114,7 @@ Este documento registra la arquitectura completa, el desglose de secciones, comp
 
 | Identificador | URL | Descripción |
 | :--- | :--- | :--- |
-| `API_URL` | `https://script.google.com/macros/s/AKfycbxh8Fy1ANi-PfDz3z3neKNfQlqZXJXMHBU2iFDPUP7tFBEVObfnQYWx0In2q3K2NlHQrA/exec` | Obtención de videos (Portfolio y Tutoriales) y reglamentación del bot |
+| `API_URL` | `https://script.google.com/macros/s/AKfycbxh8Fy1ANi-PfDz3z3neKNfQlqZXJXMHBU2iFDPUP7tFBEVObfnQYWx0In2q3K2NlHQrA/exec` | Obtención de videos (Portfolio, Reels y Tutoriales) y reglamentación del bot |
 | `CONTACT_API_URL` | `https://script.google.com/macros/s/AKfycbzawIZGAOFMLRIM4Z-DGfIgXQDec57eastP4yIvM7ypw4-EsEAwggGLo39HhmiIMndijA/exec` | Envío de formulario de contacto (vía `POST` `no-cors`) |
 | `Open-Meteo Weather` | `https://api.open-meteo.com/v1/forecast` | Datos meteorológicos (viento, lluvia, visibilidad, UV) |
 | `NOAA Space Weather` | `https://services.swpc.noaa.gov/products/noaa-planetary-k-index.json` | Índice Kp geomagnético |
@@ -120,7 +127,7 @@ Este documento registra la arquitectura completa, el desglose de secciones, comp
 1. **Respetar la paleta de colores**: Mantener los tokens de Tailwind en `tailwind.config` (`apple-green: #cefa03`, `apple-card: #1c1c1e`, `apple-bg: #000000`). No introducir colores secundarios discordantes.
 2. **Conservar la distinción Horizontal vs. Vertical**:
    - Portfolio = formato landscape `aspect-video`.
-   - Academia / Tutoriales = formato portrait `aspect-[9/16]`.
+   - Academia / Tutoriales / Reels = formato portrait `aspect-[9/16]`.
 3. **Efectos de vidrio y bordes**: Utilizar siempre clases `.glass`, `.glass-card` y bordes sutiles `border-white/10` o `border-white/5`.
 4. **Manejo de asincronismo y Skeletons**: Al agregar nuevas listas o secciones dinámicas, mantener skeletons de carga para no romper el layout inicial.
 5. **No alterar los scripts de integración con Google Apps Script y APIs públicas** sin verificar primero su funcionamiento.
@@ -134,3 +141,5 @@ Este documento registra la arquitectura completa, el desglose de secciones, comp
   - Creación del archivo `.gitignore` y Skill `.agents/skills/mododrone-learnings/SKILL.md`.
   - Auditoría y análisis técnico completo de `index.html` (Secciones, Estilos, Tailwind Config, APIs climáticas/reglamentación, Modal adaptativo y Asistente AI).
   - Prueba y confirmación exitosa de flujo CI/CD automático con Cloudflare Pages (reversión del menú a "Contacto").
+  - **Tag `v1.0.0`**: Creación y push de la etiqueta de versión estable de referencia a GitHub.
+  - **Nueva Sección Reels**: Implementación de la sección `#reels` entre Portfolio y Tutoriales para mostrar videos categorizados como `Reel-*` en formato vertical `9:16` con paginador y filtros dinámicos.
