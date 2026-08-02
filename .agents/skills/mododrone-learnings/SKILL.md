@@ -145,3 +145,9 @@ Este documento registra la arquitectura completa, el desglose de secciones, comp
   - **Nueva Sección Reels**: Implementación de la sección `#reels` entre Portfolio y Tutoriales para mostrar videos categorizados como `Reel-*` en formato vertical `9:16` con paginador y filtros dinámicos.
   - **Favicon**: Configuración del icono de la barra de navegación como favicon del sitio en `<head>`.
   - **Scroll Suave con Inercia**: Integración de la librería **Lenis** (`unpkg.com/lenis`) para lograr desplazamiento fluido con aceleración e inercia al hacer scroll con la rueda del mouse y navegación entre secciones.
+  - **Optimización Integral SEO & GEO (Inteligencia Artificial)**:
+    - **Meta Tags**: Description, Keywords, Robots `max-image-preview:large`, Canonical.
+    - **Social Sharing**: Meta etiquetas Open Graph (OG) y Twitter Cards.
+    - **Datos Estructurados (JSON-LD)**: Esquemas Schema.org para `Organization`, `ProfessionalService`, `WebSite` y `FAQPage`.
+    - **Rastreadores y Crawlers**: Creación de `robots.txt` permitiendo explícitamente bots de IA (`GPTBot`, `PerplexityBot`, `ClaudeBot`, `Google-Extended`, etc.).
+    - **Indexación y GEO Standard**: Creación del mapa del sitio `sitemap.xml` y del estándar abierto `llms.txt` para motores de búsqueda conversacionales y LLMs.

@@ -1,0 +1,26 @@
+# Modo Drone | Hub de Operaciones, Filmación Aérea 4K & FPV
+
+> **Modo Drone** es la plataforma especializada en cinematografía aérea profesional en 4K, tomas cinemáticas con drones FPV, cobertura de eventos, edición de video profesional, inspecciones técnicas y formación para pilotos.
+
+## Resumen Ejecutivo y Capacidades
+- **Servicios Principales**: Filmación aérea 4K, tomas FPV de alta velocidad y dinamismo, cobertura de eventos en vivo, inspecciones industriales/técnicas y postproducción de video.
+- **Academia & Formación**: Tutoriales y cursos para pilotos sobre configuración, técnicas de vuelo y cinematografía.
+- **Asistente Inteligente de Vuelo (AI Bot)**: Consulta en tiempo real de normativas aeronáuticas y herramientas meteorológicas (velocidad del viento, índice Kp solar, visibilidad y tiempo para Golden Hour).
+
+## Secciones Principales
+- [Inicio](https://mododrone.com.ar/#inicio): Presentación general y reel de alto impacto visual.
+- [Portfolio Paisajes](https://mododrone.com.ar/#portfolio): Muestra de trabajos cinematográficos aéreos horizontales (16:9).
+- [Reels & Shorts](https://mododrone.com.ar/#reels): Producciones verticales dinámicas (9:16) para redes y alto impacto.
+- [Academia & Tutoriales](https://mododrone.com.ar/#tutoriales): Cursos y tutoriales técnicos de vuelo.
+- [Contacto & Cotización](https://mododrone.com.ar/#contacto): Formulario directo de solicitud de presupuestos.
+
+## Preguntas Frecuentes (FAQ para IA)
+- **¿Qué tipo de tomas realiza Modo Drone?**: Tomas cinemáticas horizontales 4K con drones estabilizados y tomas inmersivas de alta velocidad con drones FPV (First Person View).
+- **¿Cómo cotizar un servicio de drone?**: Escribiendo a mododroneok@gmail.com o completando el formulario web en la sección de contacto.
+- **¿Qué tecnología o asistente ofrece para pilotos?**: Un bot integrado con datos satelitales en vivo (Open-Meteo, NOAA Kp Index, Sunrise-Sunset API) y compendio de reglamentación de drones.
+
+## Redes Sociales Oficiales
+- YouTube: https://www.youtube.com/c/ModoDrone
+- Instagram: https://instagram.com/modo_drone
+- TikTok: https://www.tiktok.com/@mododrone
+- Contacto Directo: mododroneok@gmail.com

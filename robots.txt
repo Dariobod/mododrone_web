@@ -1,0 +1,28 @@
+# robots.txt para Modo Drone
+User-agent: *
+Allow: /
+
+# Permitir explícitamente a los bots de Inteligencia Artificial (GEO / Generative Engine Optimization)
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+# Archivos de mapa de sitio y contexto IA
+Sitemap: https://mododrone.com.ar/sitemap.xml
