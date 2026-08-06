@@ -402,7 +402,7 @@
 
     <!-- Widget de Chat Bot Reglamentario -->
     <div id="droneBot" class="fixed bottom-6 right-6 z-[100] flex flex-col items-end">
-        <div id="chatWindow" class="hidden glass-card w-[320px] md:w-[380px] h-[450px] mb-4 rounded-[2rem] overflow-hidden flex flex-col shadow-2xl border border-white/20 fade-in">
+        <div id="chatWindow" data-lenis-prevent class="hidden glass-card w-[320px] md:w-[380px] h-[450px] mb-4 rounded-[2rem] overflow-hidden flex flex-col shadow-2xl border border-white/20 fade-in">
             
             <!-- Cabecera -->
             <div class="bg-apple-green p-4 flex items-center gap-3 shrink-0">
@@ -416,7 +416,7 @@
             </div>
 
             <!-- Cuerpo del Chat -->
-            <div id="chatBody" class="flex-1 p-4 overflow-y-auto space-y-4 no-scrollbar bg-black/20">
+            <div id="chatBody" data-lenis-prevent class="flex-1 p-4 overflow-y-auto space-y-4 no-scrollbar bg-black/20">
                 <div class="bg-white/10 p-3 rounded-2xl rounded-tl-none text-xs leading-relaxed border border-white/5">
                     ¡Hola! Soy tu asistente de vuelo. 🚁<br><br>
                     Pregúntame sobre reglamentación (ej: "altura") o presiona el botón de menú para ver mis herramientas meteorológicas en vivo.
@@ -847,6 +847,11 @@
             requestAnimationFrame(raf);
         }
         requestAnimationFrame(raf);
+
+        const chatWin = document.getElementById('chatWindow');
+        const chatBod = document.getElementById('chatBody');
+        if (chatWin) chatWin.addEventListener('wheel', e => e.stopPropagation(), { passive: true });
+        if (chatBod) chatBod.addEventListener('wheel', e => e.stopPropagation(), { passive: true });
 
         function closeMobileMenu() {
             const mobileMenu = document.getElementById('mobileMenu');
