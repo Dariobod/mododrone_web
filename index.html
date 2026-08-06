@@ -198,12 +198,36 @@
                     <button onclick="scrollToSection('contacto')" class="cursor-pointer bg-transparent text-apple-green border border-apple-green hover:bg-apple-green hover:text-black px-4 py-1.5 rounded-full font-semibold transition-all duration-300 shadow-[0_0_10px_rgba(206,250,3,0.15)] hover:shadow-[0_0_15px_rgba(206,250,3,0.4)] transform hover:scale-105">Contacto</button>
                 </div>
 
-                <!-- Redes Sociales -->
-                <div class="flex items-center gap-4 text-apple-gray">
-                    <a href="https://www.tiktok.com/@mododrone" target="_blank" class="hover:text-white transition-colors"><i class="fa-brands fa-tiktok text-lg"></i></a>
-                    <a href="https://www.youtube.com/c/ModoDrone" target="_blank" class="hover:text-white transition-colors"><i class="fa-brands fa-youtube text-lg"></i></a>
-                    <a href="https://instagram.com/modo_drone" target="_blank" class="hover:text-white transition-colors"><i class="fa-brands fa-instagram text-lg"></i></a>
+                <!-- Right Side: Redes Sociales & Mobile Button -->
+                <div class="flex items-center gap-3 md:gap-4">
+                    <!-- Redes Sociales Desktop -->
+                    <div class="hidden sm:flex items-center gap-4 text-apple-gray">
+                        <a href="https://www.tiktok.com/@mododrone" target="_blank" class="hover:text-white transition-colors"><i class="fa-brands fa-tiktok text-lg"></i></a>
+                        <a href="https://www.youtube.com/c/ModoDrone" target="_blank" class="hover:text-white transition-colors"><i class="fa-brands fa-youtube text-lg"></i></a>
+                        <a href="https://instagram.com/modo_drone" target="_blank" class="hover:text-white transition-colors"><i class="fa-brands fa-instagram text-lg"></i></a>
+                    </div>
+
+                    <!-- Botón Hamburguesa Mobile -->
+                    <button onclick="toggleMobileMenu()" aria-label="Abrir menú" class="md:hidden text-apple-text hover:text-apple-green focus:outline-none p-2 rounded-lg transition-colors">
+                        <i id="mobileMenuIcon" class="fa-solid fa-bars text-xl"></i>
+                    </button>
                 </div>
+            </div>
+        </div>
+
+        <!-- Dropdown Menú Mobile -->
+        <div id="mobileMenu" class="hidden md:hidden glass border-t border-white/10 px-4 pt-3 pb-6 space-y-3 transition-all duration-300">
+            <a onclick="scrollToSection('inicio')" class="block text-base font-medium text-apple-gray hover:text-white transition-colors py-2 px-3 rounded-lg hover:bg-white/5 cursor-pointer">Inicio</a>
+            <a onclick="scrollToSection('portfolio')" class="block text-base font-medium text-apple-gray hover:text-white transition-colors py-2 px-3 rounded-lg hover:bg-white/5 cursor-pointer">Videos</a>
+            <a onclick="scrollToSection('reels')" class="block text-base font-medium text-apple-gray hover:text-white transition-colors py-2 px-3 rounded-lg hover:bg-white/5 cursor-pointer">Reels</a>
+            <a onclick="scrollToSection('tutoriales')" class="block text-base font-medium text-apple-gray hover:text-white transition-colors py-2 px-3 rounded-lg hover:bg-white/5 cursor-pointer">Tutoriales</a>
+            <button onclick="scrollToSection('contacto')" class="w-full text-center cursor-pointer bg-transparent text-apple-green border border-apple-green hover:bg-apple-green hover:text-black px-4 py-2 rounded-full font-semibold transition-all duration-300 shadow-[0_0_10px_rgba(206,250,3,0.15)] mt-2">Contacto</button>
+            
+            <!-- Redes Sociales en Mobile Dropdown -->
+            <div class="flex sm:hidden justify-center gap-6 pt-4 border-t border-white/10 text-apple-gray">
+                <a href="https://www.tiktok.com/@mododrone" target="_blank" class="hover:text-white transition-colors"><i class="fa-brands fa-tiktok text-xl"></i></a>
+                <a href="https://www.youtube.com/c/ModoDrone" target="_blank" class="hover:text-white transition-colors"><i class="fa-brands fa-youtube text-xl"></i></a>
+                <a href="https://instagram.com/modo_drone" target="_blank" class="hover:text-white transition-colors"><i class="fa-brands fa-instagram text-xl"></i></a>
             </div>
         </div>
     </nav>
@@ -824,7 +848,31 @@
         }
         requestAnimationFrame(raf);
 
+        function closeMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            const mobileMenuIcon = document.getElementById('mobileMenuIcon');
+            if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.add('hidden');
+                if (mobileMenuIcon) mobileMenuIcon.classList.replace('fa-xmark', 'fa-bars');
+            }
+        }
+
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            const mobileMenuIcon = document.getElementById('mobileMenuIcon');
+            if (mobileMenu && mobileMenuIcon) {
+                if (mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.remove('hidden');
+                    mobileMenuIcon.classList.replace('fa-bars', 'fa-xmark');
+                } else {
+                    mobileMenu.classList.add('hidden');
+                    mobileMenuIcon.classList.replace('fa-xmark', 'fa-bars');
+                }
+            }
+        }
+
         function scrollToSection(id) { 
+            closeMobileMenu();
             const target = document.getElementById(id); 
             if(target) {
                 lenis.scrollTo(target, { duration: 1.2 });
