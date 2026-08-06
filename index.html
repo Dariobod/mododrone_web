@@ -645,20 +645,21 @@
             
             if (isVertical) {
                 modalContent.className = "relative w-full max-w-4xl bg-apple-card rounded-2xl shadow-2xl overflow-hidden border border-white/10 flex flex-col md:flex-row max-h-[90vh]";
-                iframeContainer.className = "w-full md:w-[350px] lg:w-[400px] shrink-0 aspect-[9/16] bg-black";
+                iframeContainer.className = "relative w-full md:w-[320px] lg:w-[360px] shrink-0 aspect-[9/16] bg-black overflow-hidden rounded-t-2xl md:rounded-l-2xl md:rounded-tr-none";
                 textContainer.className = "p-6 md:p-10 bg-apple-card border-t md:border-t-0 md:border-l border-white/5 flex-1 flex flex-col justify-center overflow-y-auto no-scrollbar";
                 textContainer.innerHTML = `<div class="bg-apple-green/20 text-apple-green px-3 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase mb-4 w-max border border-apple-green/20">${v.category}</div><h2 class="text-2xl md:text-3xl font-bold text-white mb-4 leading-tight">${v.title}</h2><p class="text-apple-gray text-sm md:text-base leading-relaxed">${v.desc || "Sin descripción."}</p>`;
                 document.getElementById('modalTopBar').classList.add('hidden');
             } else {
                 modalContent.className = "relative w-full max-w-5xl bg-apple-card rounded-2xl shadow-2xl overflow-hidden border border-white/10 flex flex-col";
-                iframeContainer.className = "w-full aspect-video bg-black shrink-0";
+                iframeContainer.className = "w-full aspect-video bg-black shrink-0 overflow-hidden";
                 textContainer.className = "p-6 bg-apple-card border-t border-white/5 flex flex-col";
                 document.getElementById('modalTitle').textContent = v.title;
                 textContainer.innerHTML = `<p class="text-apple-gray text-sm md:text-base leading-relaxed">${v.desc || "Sin descripción."}</p>`;
                 document.getElementById('modalTopBar').classList.remove('hidden');
             }
             
-            iframeContainer.innerHTML = `<iframe id="modalIframe" src="https://www.youtube.com/embed/${v.ytId}?autoplay=1&enablejsapi=1&rel=0" class="w-full h-full border-0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+            const iframeScaleClass = isVertical ? "scale-[1.08] transform-gpu" : "";
+            iframeContainer.innerHTML = `<iframe id="modalIframe" src="https://www.youtube.com/embed/${v.ytId}?autoplay=1&enablejsapi=1&rel=0" class="w-full h-full border-0 ${iframeScaleClass}" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
             
             const iframe = document.getElementById('modalIframe');
             if (iframe) {
