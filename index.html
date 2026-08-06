@@ -658,8 +658,23 @@
                 document.getElementById('modalTopBar').classList.remove('hidden');
             }
             
-            iframeContainer.innerHTML = `<iframe src="https://www.youtube.com/embed/${v.ytId}?autoplay=1&mute=1&rel=0" class="w-full h-full border-0" allowfullscreen></iframe>`;
-            document.getElementById('videoModal').classList.remove('hidden'); document.body.style.overflow = 'hidden';
+            iframeContainer.innerHTML = `<iframe id="modalIframe" src="https://www.youtube.com/embed/${v.ytId}?autoplay=1&enablejsapi=1&rel=0" class="w-full h-full border-0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+            
+            const iframe = document.getElementById('modalIframe');
+            if (iframe) {
+                const set50Volume = () => {
+                    try {
+                        iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'unMute', args: [] }), '*');
+                        iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'setVolume', args: [50] }), '*');
+                    } catch(e) {}
+                };
+                iframe.onload = set50Volume;
+                setTimeout(set50Volume, 500);
+                setTimeout(set50Volume, 1000);
+            }
+
+            document.getElementById('videoModal').classList.remove('hidden'); 
+            document.body.style.overflow = 'hidden';
         }
 
         function closeModal() {
