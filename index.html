@@ -656,35 +656,28 @@
             const iframeContainer = document.getElementById('iframeContainer');
             const textContainer = document.getElementById('modalTextContainer');
             
-            // Layout responsivo y tamaño dinámico del modal sin estiramiento
-            modalContent.className = "relative w-full max-w-5xl bg-[#1c1c1e] rounded-2xl shadow-2xl overflow-hidden border border-white/10 flex flex-col md:flex-row md:max-h-[85vh] max-h-[90vh]";
-
             if (isVertical) {
+                // Layout responsivo y tamaño dinámico del modal para videos verticales (más angosto: max-w-3xl)
+                modalContent.className = "relative w-full max-w-3xl bg-[#1c1c1e] rounded-2xl shadow-2xl overflow-hidden border border-white/10 flex flex-col md:flex-row md:max-h-[85vh] max-h-[90vh]";
                 // Video Vertical (aspect-ratio 9:16)
-                // En desktop: altura fija controlada (máximo 600px o 75vh) con padding y ancho auto-calculado para no recortar controles de YouTube
-                // En mobile: max-h de 55vh a 60vh y aspect-ratio 9:16
-                iframeContainer.className = "modal-video-container w-full md:w-auto md:h-[75vh] md:max-h-[600px] max-h-[55vh] sm:max-h-[60vh] aspect-[9/16] shrink-0 flex items-center justify-center p-2.5 sm:p-3 md:p-4 bg-black mx-auto";
+                // Ocupa el alto completo del popup (sin padding) y se alinea al ras con el borde izquierdo (rounded-l-2xl en desktop)
+                iframeContainer.className = "modal-video-container w-full md:w-auto md:h-[80vh] md:max-h-[680px] max-h-[55vh] sm:max-h-[60vh] aspect-[9/16] shrink-0 bg-black rounded-t-2xl md:rounded-l-2xl md:rounded-r-none overflow-hidden mx-auto";
             } else {
+                // Layout responsivo y tamaño dinámico del modal para videos horizontales (estándar: max-w-5xl)
+                modalContent.className = "relative w-full max-w-5xl bg-[#1c1c1e] rounded-2xl shadow-2xl overflow-hidden border border-white/10 flex flex-col md:flex-row md:max-h-[85vh] max-h-[90vh]";
                 // Video Horizontal (aspect-ratio 16:9)
-                iframeContainer.className = "modal-video-container w-full md:w-auto md:h-[50vh] md:max-h-[400px] max-h-[40vh] aspect-video shrink-0 flex items-center justify-center p-2.5 sm:p-3 md:p-4 bg-black mx-auto";
+                // Ocupa el alto completo del popup (sin padding) y se alinea al ras con el borde izquierdo (rounded-l-2xl en desktop)
+                iframeContainer.className = "modal-video-container w-full md:w-auto md:h-[50vh] md:max-h-[420px] max-h-[40vh] aspect-video shrink-0 bg-black rounded-t-2xl md:rounded-l-2xl md:rounded-r-none overflow-hidden mx-auto";
             }
             iframeContainer.style.cssText = ''; // Limpia cualquier estilo inline residual
 
-            // Inyectamos la caja contenedora con esquinas redondeadas y el iframe al 100%
-            iframeContainer.innerHTML = `
-                <div class="w-full h-full rounded-xl overflow-hidden relative bg-black shadow-2xl">
-                    <iframe id="modalIframe" src="https://www.youtube.com/embed/${v.ytId}?autoplay=1&enablejsapi=1&rel=0&modestbranding=1" class="modal-video-iframe" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-                </div>
-            `;
+            // Inyectamos el iframe al 100% ocupando todo el alto y alineándose al ras de la izquierda
+            iframeContainer.innerHTML = `<iframe id="modalIframe" src="https://www.youtube.com/embed/${v.ytId}?autoplay=1&enablejsapi=1&rel=0&modestbranding=1" class="modal-video-iframe w-full h-full border-0 block" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
 
             // Contenedor de Texto a la derecha
             textContainer.className = "p-6 md:p-8 flex flex-col flex-1 justify-start overflow-y-auto no-scrollbar md:max-h-[85vh] max-h-[35vh]";
             textContainer.innerHTML = `
                 <div class="flex flex-col h-full">
-                    <!-- Categoría -->
-                    <span class="text-xs font-bold text-apple-green bg-apple-green/10 border border-apple-green/20 rounded-full px-3 py-1 w-fit mb-4 tracking-wider uppercase">
-                        ${v.category}
-                    </span>
                     <!-- Título -->
                     <h2 class="text-xl md:text-2xl font-bold text-white mb-4 leading-tight">
                         ${v.title}
