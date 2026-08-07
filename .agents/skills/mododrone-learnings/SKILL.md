@@ -176,8 +176,9 @@ Este documento registra la arquitectura completa, el desglose de secciones, comp
     - **Visibilidad Completa de Controles**: Al conservar la escala real (escala 1, sin zoom), se eliminaron los recortes en la barra superior (título y avatar) y la barra inferior (barra de progreso y logotipo de Shorts) que ocurrían antes en YouTube.
     - **Limpieza de UI**: Se eliminó la etiqueta de categoría (`v.category`) que se mostraba en la parte superior del título en el panel lateral de texto del modal.
     - **Optimización de Ancho**: Se redujo el ancho máximo del popup exclusivamente para videos verticales a `max-w-3xl` para lograr una proporción de distribución más armoniosa con la columna de texto.
-  - **Actualización de Textos y Botón en Portada (Hero)**:
-    - **Nuevos Textos**: Se cambió el título principal a "Vuelo con Drones \n Sin Límites" y el subtítulo para orientarlo a creadores y aficionados de drones.
-    - **Elevación de Bloque**: Se desplazó el bloque completo de la portada ligeramente hacia arriba (`-translate-y-8` en móvil y `-translate-y-16` en desktop) para lograr un balance vertical óptimo y despejar la base.
-    - **Botón "Ver Videos"**: Se integró un botón interactivo de gran tamaño (`px-8 py-4 text-lg md:text-xl`), transparente con texto blanco (`text-white`) para mejor legibilidad, bordes verde neón, posicionado de forma independiente fuera del contenedor de texto para centrarlo horizontalmente respecto a todo el ancho de la página, removiendo la traslación negativa e incrementando la separación (`mt-16`/`mt-28`) para ubicarlo de manera equilibrada entre el subtítulo y la flecha inferior de scroll.
+  - **Actualización de Textos y Botones de Navegación**:
+    - **Nuevos Textos en Portada**: Se cambió el título principal a "Vuelo con Drones \n Sin Límites" y el subtítulo para orientarlo a creadores y aficionados de drones.
+    - **Elevación de Bloque**: Se desplazó el bloque completo de la portada ligeramente hacia arriba (`-translate-y-8`/`-translate-y-16`) para lograr un balance vertical óptimo.
+    - **Botón "Ver Videos"**: Se integró un botón interactivo de gran tamaño (`px-8 py-4 text-lg md:text-xl`), transparente con texto blanco (`text-white`), bordes verde neón, posicionado centrado respecto a todo el ancho de la página y mayor separación vertical (`mt-16`/`mt-28`).
+    - **Botones "Contacto" de Navbar**: Se cambiaron los botones de Contacto (tanto en el menú de escritorio como en el móvil desplegable) para tener el texto en color blanco (`text-white`) y el borde de 2px de grosor (`border-2 border-apple-green`), alineándose estéticamente con el diseño del botón principal.
 
