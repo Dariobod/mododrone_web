@@ -103,9 +103,9 @@ Este documento registra la arquitectura completa, el desglose de secciones, comp
   - **Base de Datos de Reglamento**: Consulta dinámica desde Apps Script (`?tipo=reglamento`).
 
 ### I. Modal Reproductor de Video (`#videoModal`)
-- Modal adaptativo inteligente:
-  - **Videos horizontales (Portfolio)**: Reproductor de 16:9 centrado con barra superior.
-  - **Videos verticales (Shorts/Tutoriales/Reels)**: Formato split en desktop (reproductor 9:16 a la izquierda, descripción con tipografía destacada a la derecha).
+- Modal adaptativo unificado:
+  - Layout de tipo Split Horizontal en desktop (`md:flex-row`): el video reproduciéndose en la columna izquierda y a la derecha los textos (Categoría, Título destacado y Descripción scrollable por debajo). En móvil se apila verticalmente (`flex-col`).
+  - La relación de aspecto del video (9:16 para verticales, 16:9 para horizontales) se preserva perfectamente fijando su altura y auto-calculando el ancho en base a `aspect-ratio` y `w-auto` de forma reactiva. Así se previene cualquier tipo de deformación o corte de video.
 - Cierre mediante tecla `Escape`, botón "X" o clic fuera del contenido (`modalOverlay`).
 
 ---
@@ -166,3 +166,11 @@ Este documento registra la arquitectura completa, el desglose de secciones, comp
   - **Actualización de Título & Botón en Contacto**: Cambio del encabezado de la sección `#contacto` a "Cuéntanos tu necesidad." y actualización del botón "Enviar Mensaje" a puntas completamente redondeadas estilo píldora (`rounded-full`).
   - **Renombrado & Subtítulo de Sección Tutoriales**: Cambio del título de "Academia & Tutoriales." a "Tutoriales." y actualización del subtítulo a "Realiza videos épicos y configura tu dron como un profesional.".
   - **Volumen al 50% & Ajuste Edge-to-Edge en Modal de Reels**: Configuración del reproductor emergente en `openModal` con sonido al 50% de volumen. Eliminación completa de los bordes/franjas negras laterales en videos verticales mediante `scale-[1.08]`, `overflow-hidden` y esquinas redondeadas encajando perfectamente en la tarjeta del modal.
+  - **Rediseño Completo del Popup de Reproducción sin Recortes**:
+    - **Nueva Distribución Unificada**: El reproductor se reconstruyó desde cero para ambos formatos (horizontal/vertical) con maquetación split horizontal. En pantallas de escritorio (`md:`), el video se reproduce a la izquierda, y en la columna de la derecha se visualiza de forma limpia la etiqueta de categoría, el título en letra grande y la descripción detallada del video.
+    - **Solución al Recorte/Pillarboxing**: Para evitar que YouTube recorte el video por adaptaciones del player al flujo flex, se fijó el alto del reproductor en CSS dinámico (`md:h-[75vh]` en vertical, `md:h-[50vh]` en horizontal) y se le asignó `w-auto aspect-[9/16]` o `w-auto aspect-video`. De esta forma, el ancho se autocalcula preservando la proporción exacta del video, evitando bandas oscuras y recortes.
+- **2026-08-07**:
+  - **Corrección Completa de Recorte Superior/Inferior en Modal de Reels & Shorts**:
+    - **Causa Raíz**: Los bordes redondeados `rounded-2xl` del modal contenedor y la falta de padding en el marco del reproductor recortaban físicamente la barra superior (icono de canal, título) e inferior (línea de tiempo, duración, botón de pantalla completa y logo de Shorts) del reproductor embebido de YouTube.
+    - **Solución Visual & Adaptativa**: Se incorporó un marco interno con padding responsivo (`p-2.5 sm:p-3 md:p-4 bg-black`) y esquinas redondeadas independientes (`rounded-xl overflow-hidden shadow-2xl`) para el `iframe`. Se fijaron límites de altura máxima en mobile (`max-h-[55vh]` en vertical, `max-h-[40vh]` en horizontal) para evitar recortes por `overflow-hidden` en pantallas pequeñas. El video y sus controles nativos se visualizan ahora al 100% completos, nítidos y sin ningún tipo de recorte.
+

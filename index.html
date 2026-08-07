@@ -175,6 +175,22 @@
         @keyframes slideUp { from { transform: translateY(50px) scale(0.97); opacity: 0; } to { transform: translateY(0) scale(1); opacity: 1; } }
        .play-overlay { opacity: 0; transition: all 0.3s ease; }
        .group:hover .play-overlay { opacity: 1; transform: scale(1.1); }
+
+        /* === MODAL YOUTUBE IFRAME REDISEÑADO === */
+        .modal-video-container {
+            position: relative;
+            overflow: hidden;
+            background: #000;
+        }
+        .modal-video-iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            display: block;
+        }
     </style>
 </head>
 <body class="selection:bg-apple-green selection:text-black relative">
@@ -446,13 +462,10 @@
     <!-- MODAL REPRODUCTOR DE VIDEO -->
     <div id="videoModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6">
         <div id="modalOverlay" class="absolute inset-0 bg-black/80 backdrop-blur-md transition-opacity cursor-pointer" onclick="closeModal()"></div>
-        <div id="modalContent" class="relative w-full max-w-5xl bg-apple-card rounded-2xl shadow-2xl overflow-hidden border border-white/10 flex flex-col">
+        <div id="modalContent" class="relative w-full max-w-5xl bg-apple-card rounded-2xl shadow-2xl overflow-hidden border border-white/10 flex flex-col md:flex-row">
             <button onclick="closeModal()" class="absolute top-4 right-4 z-50 w-10 h-10 bg-black/50 backdrop-blur-md hover:bg-white/20 text-white rounded-full flex items-center justify-center transition-colors border border-white/10 shadow-lg"><i class="fa-solid fa-xmark"></i></button>
-            <div id="modalTopBar" class="absolute top-0 left-0 w-full p-4 flex justify-between items-start z-10 pointer-events-none">
-                <div class="pointer-events-auto bg-black/50 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 max-w-[80%]"><h3 id="modalTitle" class="text-white font-semibold text-sm line-clamp-1">Reproduciendo</h3></div>
-            </div>
-            <div class="w-full aspect-video bg-black shrink-0" id="iframeContainer"></div>
-            <div id="modalTextContainer" class="p-6 bg-apple-card border-t border-white/5 flex flex-col"></div>
+            <div id="iframeContainer" class="bg-black shrink-0 relative overflow-hidden"></div>
+            <div id="modalTextContainer" class="flex flex-col flex-1 bg-apple-card"></div>
         </div>
     </div>
 
@@ -643,24 +656,50 @@
             const iframeContainer = document.getElementById('iframeContainer');
             const textContainer = document.getElementById('modalTextContainer');
             
+            // Layout responsivo y tamaño dinámico del modal sin estiramiento
+            modalContent.className = "relative w-full max-w-5xl bg-[#1c1c1e] rounded-2xl shadow-2xl overflow-hidden border border-white/10 flex flex-col md:flex-row md:max-h-[85vh] max-h-[90vh]";
+
             if (isVertical) {
-                modalContent.className = "relative w-full max-w-4xl bg-apple-card rounded-2xl shadow-2xl overflow-hidden border border-white/10 flex flex-col md:flex-row max-h-[90vh]";
-                iframeContainer.className = "relative w-full md:w-[320px] lg:w-[360px] shrink-0 aspect-[9/16] bg-black overflow-hidden rounded-t-2xl md:rounded-l-2xl md:rounded-tr-none";
-                textContainer.className = "p-6 md:p-10 bg-apple-card border-t md:border-t-0 md:border-l border-white/5 flex-1 flex flex-col justify-center overflow-y-auto no-scrollbar";
-                textContainer.innerHTML = `<div class="bg-apple-green/20 text-apple-green px-3 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase mb-4 w-max border border-apple-green/20">${v.category}</div><h2 class="text-2xl md:text-3xl font-bold text-white mb-4 leading-tight">${v.title}</h2><p class="text-apple-gray text-sm md:text-base leading-relaxed">${v.desc || "Sin descripción."}</p>`;
-                document.getElementById('modalTopBar').classList.add('hidden');
+                // Video Vertical (aspect-ratio 9:16)
+                // En desktop: altura fija controlada (máximo 600px o 75vh) con padding y ancho auto-calculado para no recortar controles de YouTube
+                // En mobile: max-h de 55vh a 60vh y aspect-ratio 9:16
+                iframeContainer.className = "modal-video-container w-full md:w-auto md:h-[75vh] md:max-h-[600px] max-h-[55vh] sm:max-h-[60vh] aspect-[9/16] shrink-0 flex items-center justify-center p-2.5 sm:p-3 md:p-4 bg-black mx-auto";
             } else {
-                modalContent.className = "relative w-full max-w-5xl bg-apple-card rounded-2xl shadow-2xl overflow-hidden border border-white/10 flex flex-col";
-                iframeContainer.className = "w-full aspect-video bg-black shrink-0 overflow-hidden";
-                textContainer.className = "p-6 bg-apple-card border-t border-white/5 flex flex-col";
-                document.getElementById('modalTitle').textContent = v.title;
-                textContainer.innerHTML = `<p class="text-apple-gray text-sm md:text-base leading-relaxed">${v.desc || "Sin descripción."}</p>`;
-                document.getElementById('modalTopBar').classList.remove('hidden');
+                // Video Horizontal (aspect-ratio 16:9)
+                iframeContainer.className = "modal-video-container w-full md:w-auto md:h-[50vh] md:max-h-[400px] max-h-[40vh] aspect-video shrink-0 flex items-center justify-center p-2.5 sm:p-3 md:p-4 bg-black mx-auto";
             }
-            
-            const iframeScaleClass = isVertical ? "scale-[1.08] transform-gpu" : "";
-            iframeContainer.innerHTML = `<iframe id="modalIframe" src="https://www.youtube.com/embed/${v.ytId}?autoplay=1&enablejsapi=1&rel=0" class="w-full h-full border-0 ${iframeScaleClass}" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
-            
+            iframeContainer.style.cssText = ''; // Limpia cualquier estilo inline residual
+
+            // Inyectamos la caja contenedora con esquinas redondeadas y el iframe al 100%
+            iframeContainer.innerHTML = `
+                <div class="w-full h-full rounded-xl overflow-hidden relative bg-black shadow-2xl">
+                    <iframe id="modalIframe" src="https://www.youtube.com/embed/${v.ytId}?autoplay=1&enablejsapi=1&rel=0&modestbranding=1" class="modal-video-iframe" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                </div>
+            `;
+
+            // Contenedor de Texto a la derecha
+            textContainer.className = "p-6 md:p-8 flex flex-col flex-1 justify-start overflow-y-auto no-scrollbar md:max-h-[85vh] max-h-[35vh]";
+            textContainer.innerHTML = `
+                <div class="flex flex-col h-full">
+                    <!-- Categoría -->
+                    <span class="text-xs font-bold text-apple-green bg-apple-green/10 border border-apple-green/20 rounded-full px-3 py-1 w-fit mb-4 tracking-wider uppercase">
+                        ${v.category}
+                    </span>
+                    <!-- Título -->
+                    <h2 class="text-xl md:text-2xl font-bold text-white mb-4 leading-tight">
+                        ${v.title}
+                    </h2>
+                    <!-- Separador -->
+                    <div class="h-[1px] bg-white/5 mb-4"></div>
+                    <!-- Descripción -->
+                    <div class="flex-1 overflow-y-auto no-scrollbar pr-1">
+                        <p class="text-apple-gray text-sm md:text-base leading-relaxed">
+                            ${v.desc || "Sin descripción."}
+                        </p>
+                    </div>
+                </div>
+            `;
+
             const iframe = document.getElementById('modalIframe');
             if (iframe) {
                 const set50Volume = () => {
